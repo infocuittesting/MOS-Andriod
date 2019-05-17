@@ -3,8 +3,8 @@ from sqlwrapper import *
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-from apscheduler.schedulers.blocking import BlockingScheduler
-sched = BlockingScheduler()
+#from apscheduler.schedulers.blocking import BlockingScheduler
+#sched = BlockingScheduler()
 def sendemailadmin(get_employee,msges):
                  #email = ['infocuit.daisy@gmail.com','infocuit.aravindh@gmail.com']
                  name = "daisy"
@@ -76,8 +76,8 @@ def sendemailadmin(get_employee,msges):
                       print ("the message has been sent successfully")
                       server.quit()
 
-@sched.scheduled_job('interval', seconds=30)
-def foodandbeverage():
+#@sched.scheduled_job('interval', seconds=30)
+def foodandbeverage(request):
    print("foodandbeverage")
    string,string1,esca_string,esca_string1 = '','','',''
    today_date = application_datetime().strftime('%Y-%m-%d')
@@ -166,9 +166,10 @@ def foodandbeverage():
          #print(current.strftime('%M'), type(current.strftime('%M')))
    else:
            pass
+   return json.dumps({"Return":"Success"})
   #House keeping
-@sched.scheduled_job('interval', seconds=30)        
-def housekeeping():
+#@sched.scheduled_job('interval', seconds=30)        
+def housekeeping(request):
    print("housekeeping")
    string,string1,esca_string,esca_string1 = '','','',''
    today_date = application_datetime().strftime('%Y-%m-%d')
@@ -257,10 +258,11 @@ def housekeeping():
          #print(current.strftime('%M'), type(current.strftime('%M')))
    else:
            pass
+   return json.dumps({"Return":"Success"})
     
 #Front Desk
-@sched.scheduled_job('interval', seconds=30)
-def frontdesk():
+#@sched.scheduled_job('interval', seconds=30)
+def frontdesk(request):
    print("front desk")
    string,string1,esca_string,esca_string1 = '','','',''
    today_date = application_datetime().strftime('%Y-%m-%d')
@@ -350,6 +352,6 @@ def frontdesk():
    else:
            pass
        
-    #return json.dumps({"Return":"Success"})
-sched.start()
+   return json.dumps({"Return":"Success"})
+#sched.start()
 
