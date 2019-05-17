@@ -5,6 +5,7 @@ from flask_cors import CORS
 app = Flask(__name__) #here i set environment varible for flask framework web application
 CORS(app)
 #-----------------------Configuration-------------------
+from test_File import *
 from Signup_Details import *
 from Frontdesk_Request import *
 from Raise_Front_Desk_Request import *
@@ -28,6 +29,9 @@ def mos_index():
 #def pass_param(name):
    # return (name)
 #-----------hotel signup details--------------
+@app.route("/Test_Insert_Data",methods=['POST'])
+def testdata():
+    return test_Data(request)
 
 @app.route("/Hotel_Signup_Details",methods=['POST'])
 def sigupdetail():
@@ -188,4 +192,4 @@ def unhandled_exception(e):
 	
 if __name__ == "__main__":
     #TOS.run(debug=True)
-    app.run(host ='192.168.99.1',port =5000)#run web application
+    app.run(host ='192.168.1.29',port =5000)#run web application
