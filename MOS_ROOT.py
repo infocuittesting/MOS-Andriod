@@ -5,7 +5,6 @@ from flask_cors import CORS
 app = Flask(__name__) #here i set environment varible for flask framework web application
 CORS(app)
 #-----------------------Configuration-------------------
-from test_File import *
 from Signup_Details import *
 from Frontdesk_Request import *
 from Raise_Front_Desk_Request import *
@@ -18,7 +17,8 @@ from housekeeping_configuration import *
 from configure_hotelrooms import *
 from configure_hotelDepartment import *
 from configure_foodandbeverage import *
-from Raise_Foodandbeverage_Request import * 
+from Raise_Foodandbeverage_Request import *
+from Reminder_Escalation import *
 #below i set path for web application
 
 @app.route("/",methods=['GET','POST'])
@@ -29,9 +29,6 @@ def mos_index():
 #def pass_param(name):
    # return (name)
 #-----------hotel signup details--------------
-@app.route("/Test_Insert_Data",methods=['POST'])
-def testdata():
-    return test_Data(request)
 
 @app.route("/Hotel_Signup_Details",methods=['POST'])
 def sigupdetail():
@@ -182,6 +179,18 @@ def CloseHKRequest():
 @app.route("/Query_Hk_Request",methods=['POST'])
 def QueryHkRequest():
    return Query_Hk_Request(request)
+#-------------------reminder------------#
+@app.route("/Foodandbeverage_Reminder",methods=['GET'])
+def fooandbev():
+   return foodandbeverage()
+
+@app.route("/Housekeeping_Reminder",methods=['GET'])
+def houkee():
+   return housekeeping()
+
+@app.route("/Frontdesk_Reminder",methods=['GET'])
+def frontdk():
+   return frontdesk()
 
 @app.errorhandler(404)
 def unhandled_exception(e):
@@ -192,4 +201,4 @@ def unhandled_exception(e):
 	
 if __name__ == "__main__":
     #TOS.run(debug=True)
-    app.run(host ='192.168.1.29',port =5000)#run web application
+    app.run(host ='192.168.99.1',port =5000)#run web application
