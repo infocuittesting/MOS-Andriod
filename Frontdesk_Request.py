@@ -53,7 +53,7 @@ def Update_Front_Desk_Items(request):
         gensql('update','fdcategory',e,f)
     '''
     return json.dumps({"Return": "Record Updated Successfully","ReturnCode": "RUS","Status": "Success","StatusCode": "200"},indent = 4)
-def select_Configure_Front_Desk(request):
+def Select_Front_Desk_Items(request):
     d = request.json
     output = json.loads(dbget("select fdcategory.fdcategory_id,fdcategory.fdcategory_name,fdcategory.fdcategory_image,frontdesk_items.fditem_id,\
                                frontdesk_items.fditem_names,frontdesk_items.fditem_image,\

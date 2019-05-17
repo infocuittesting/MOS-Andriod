@@ -77,7 +77,7 @@ def sendemailadmin(get_employee,msges):
                       server.quit()
 
 #@sched.scheduled_job('interval', seconds=30)
-def foodandbeverage(request):
+def Foodandbeverage_Reminder(request):
    print("foodandbeverage")
    string,string1,esca_string,esca_string1 = '','','',''
    today_date = application_datetime().strftime('%Y-%m-%d')
@@ -169,7 +169,7 @@ def foodandbeverage(request):
    return json.dumps({"Return":"Success"})
   #House keeping
 #@sched.scheduled_job('interval', seconds=30)        
-def housekeeping(request):
+def Housekeeping_Reminder(request):
    print("housekeeping")
    string,string1,esca_string,esca_string1 = '','','',''
    today_date = application_datetime().strftime('%Y-%m-%d')
@@ -262,7 +262,7 @@ def housekeeping(request):
     
 #Front Desk
 #@sched.scheduled_job('interval', seconds=30)
-def frontdesk(request):
+def Frontdesk_Reminder(request):
    print("front desk")
    string,string1,esca_string,esca_string1 = '','','',''
    today_date = application_datetime().strftime('%Y-%m-%d')

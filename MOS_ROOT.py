@@ -38,7 +38,7 @@ def sigupdetail():
 @app.route("/Query_Hotel_Signup_Details",methods=['GET'])
 def querysigupdetail():
     return Query_Hotel_Signup_Details(request)
-
+#-----------------------Front Desk Items--------------#
 
 @app.route("/Configure_Front_Desk_Items",methods=['POST'])
 def frontdeskservice():
@@ -48,85 +48,90 @@ def frontdeskservice():
 def updatefrontdeskitems():
     return Update_Front_Desk_Items(request)
 
+@app.route("/Select_Front_Desk_Items",methods=['POST'])
+def selectfrontdeskitems():
+    return Select_Front_Desk_Items(request)
+
 #----------------configuration----------#
 
 @app.route("/Update_Roomtype",methods=['POST'])
 def updateroomtype():
-    return update_room_type(request)
+    return Update_Roomtype(request)
 
 @app.route("/Insert_Roomtype",methods=['POST'])
 def insertroomtype():
-    return insert_room(request)
+    return Insert_Roomtype(request)
 
 @app.route("/Select_Room_Type",methods=['POST'])
 def selectroomtype():
-   return select_room(request)
+   return Select_Room_Type(request)
 
 @app.route("/Insert_Contact_Number",methods=['POST'])
 def insertcontactnumber():
-    return insert_number(request)
+    return Insert_Contact_Number(request)
 
 @app.route("/Select_Contact_Number",methods=['POST'])
 def selectcontactnumber():
-    return select_number(request)
+    return Select_Contact_Number(request)
 
 @app.route("/Delete_Contact_Number",methods=['POST'])
 def deletecontactnumber():
-    return delete_number(request)
+    return Delete_Contact_Number(request)
+#-----------------House Keeping Items-----------------#
 @app.route("/Insert_Housekeeping_Item",methods=['POST'])
 def housekeepingitem():
-   return insert_housekeeping_items(request)
+   return Insert_Housekeeping_Item(request)
 
 @app.route("/Select_Housekeeping_Item",methods=['POST'])
 def selecthousekeepingitem():
-   return select_housekeeping_items(request)
+   return Select_Housekeeping_Item(request)
 
 @app.route("/Update_Housekeeping_Item",methods=['POST'])
 def updatehousekeepingitem():
-   return update_housekeeping_items(request)
+   return Update_Housekeeping_Item(request)
 #configure hotel rooms*******************************
 
 @app.route("/Insert_Hotel_room",methods=['POST'])
-def hotelroom():
-    return insert_hotelrooms(request)
+def inserthotelroom():
+    return Insert_Hotel_room(request)
 
 @app.route("/Select_Hotel_Room",methods=['POST'])
-def hotel_room():
-    return select_hotelrooms(request)
+def selecthotelroom():
+    return Select_Hotel_Room(request)
 
-@app.route("/Update_Room_Status",methods=['POST'])
-def hotel_rooms():
-    return update_roomlogin(request)
+@app.route("/Update_Room_Login",methods=['POST'])
+def updatehotelrooms():
+    return Update_Room_Login(request)
 
 #****************department***************
 
 @app.route("/Insert_Hotel_Department",methods=['POST'])
 def hotel_department():
-    return insert_hoteldepartment(request)
+    return Insert_Hotel_Department(request)
 
-@app.route("/Update_Department_Status",methods=['POST'])
+@app.route("/Update_Department_Login",methods=['POST'])
 def update_department():
-    return update_departmentlogin(request)
+    return pdate_Department_Login(request)
 
 @app.route("/Update_Hotel_Department",methods=['POST'])
 def update_departments():
-    return update_hoteldepartment(request)
+    return Update_Hotel_Department(request)
 
 @app.route("/Select_Hotel_Department",methods=['POST'])
 def select_department():
-    return select_hoteldepartment(request)
+    return Select_Hotel_Department(request)
 #configure food and beverage******************************
 @app.route("/Foodandbeverage_Items",methods=['POST'])
 def conf_foodandbeverage():
-    return Configure_Foodandbeverage_Items(request)
+    return Foodandbeverage_Items(request)
 
 @app.route("/Select_Foodandbeverage_Items",methods=['POST'])
 def select_foodandbeverage():
-    return select_Foodandbeverage_Items(request)
+    return Select_Foodandbeverage_Items(request)
 
 @app.route("/Update_Foodandbeverage_Items",methods=['POST'])
 def update_foodandbeverage():
-    return update_Foodandbeverage_Items(request)
+    return Update_Foodandbeverage_Items(request)
 
 #----------------------------------------------Raise Request
 
@@ -182,15 +187,15 @@ def QueryHkRequest():
 #-------------------reminder------------#
 @app.route("/Foodandbeverage_Reminder",methods=['GET'])
 def fooandbev():
-   return foodandbeverage(request)
+   return Foodandbeverage_Reminder(request)
 
 @app.route("/Housekeeping_Reminder",methods=['GET'])
 def houkee():
-   return housekeeping(request)
+   return Housekeeping_Reminder(request)
 
 @app.route("/Frontdesk_Reminder",methods=['GET'])
 def frontdk():
-   return frontdesk(request)
+   return Frontdesk_Reminder(request)
 
 @app.errorhandler(404)
 def unhandled_exception(e):

@@ -1,12 +1,12 @@
 from sqlwrapper import *
 import random
-def insert_hoteldepartment(request):
+def Insert_Hotel_Department(request):
     d=  request.json
     d.update({'dept_id': (str(d['dept_name'][:3]) +str(random.randint(1000,3000))).lower(),'dept_name':d['dept_name'].title()})
     gensql('insert','hotel_department',d)
     return json.dumps({"Return": "Record Inserted Successfully","ReturnCode": "RIS","Status": "Success","StatusCode": "200"},indent = 4)    
 
-def update_departmentlogin(request):
+def pdate_Department_Login(request):
     d = request.json
     details = json.loads(dbget("select * from hotel_details where business_id = '"+str(d['business_id'])+"'"))
     if d['loginstatus_id'] == 1:
@@ -20,7 +20,7 @@ def update_departmentlogin(request):
         sql=gensql('update','hotel_department',b,c)
         return json.dumps({"Return": "LogOut Successfully","ReturnCode": "LOS","Status": "Success","StatusCode": "200"},indent = 4)
 
-def update_hoteldepartment(request):
+def Update_Hotel_Department(request):
     d = request.json
 
     b={k : v for k,v in d.items() if k in ('dept_image','dept_password')}
@@ -29,7 +29,7 @@ def update_hoteldepartment(request):
     return json.dumps({"Return": "Record Updated Successfully","ReturnCode": "RUS","Status": "Success","StatusCode": "200"},indent = 4)
     
 
-def select_hoteldepartment(request):
+def Select_Hotel_Department(request):
     d = request.json
     rooms = json.loads(dbget("select h.dept_id,h.dept_name,h.dept_image,h.dept_password,h.loginstatus_id,h.business_id,l.loginstatus\
     from hotel_department h join login_status l on h.loginstatus_id = l.loginstatus_id\

@@ -1,7 +1,7 @@
 from sqlwrapper import *
 import random
 from Fetch_Current_Datetime import *
-def Configure_Foodandbeverage_Items(request):
+def Foodandbeverage_Items(request):
     d = request.json
     print(d) 
     get_category = json.loads(dbget("select count(*) from food_category \
@@ -32,7 +32,7 @@ def Configure_Foodandbeverage_Items(request):
 
     return json.dumps({"Return": "Record Inserted Successfully","ReturnCode": "RIS","Status": "Success","StatusCode": "200"},indent = 4)
 
-def select_Foodandbeverage_Items(request):
+def Select_Foodandbeverage_Items(request):
     d = request.json
     rooms = json.loads(dbget("select f.item_name,f.business_id,f.dept_id,f.item_description,f.price,f.foodtype_id,f.todayspecial_id,\
     f.fbitem_id,f.foodcategory_id,f.item_createdon,o.foodcateg_name,o.foodcateg_image,\
@@ -46,7 +46,7 @@ def select_Foodandbeverage_Items(request):
     return json.dumps({"Return": "Record Retrived Successfully","ReturnCode": "RRS","ReturnValue":rooms,"Status": "Success","StatusCode": "200"},indent = 4)
 
 
-def update_Foodandbeverage_Items(request):
+def Update_Foodandbeverage_Items(request):
     d = request.json
     d.update({'foodcateg_name':d['foodcateg_name'].title(),"item_name":d['item_name'].title()})
     print(d) 
