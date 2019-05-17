@@ -117,7 +117,7 @@ def select_department():
     return select_hoteldepartment(request)
 #configure food and beverage******************************
 @app.route("/Foodandbeverage_Items",methods=['POST'])
-def foodandbeverage():
+def conf_foodandbeverage():
     return Configure_Foodandbeverage_Items(request)
 
 @app.route("/Select_Foodandbeverage_Items",methods=['POST'])
@@ -182,15 +182,15 @@ def QueryHkRequest():
 #-------------------reminder------------#
 @app.route("/Foodandbeverage_Reminder",methods=['GET'])
 def fooandbev():
-   return foodandbeverage()
+   return foodandbeverage(request)
 
 @app.route("/Housekeeping_Reminder",methods=['GET'])
 def houkee():
-   return housekeeping()
+   return housekeeping(request)
 
 @app.route("/Frontdesk_Reminder",methods=['GET'])
 def frontdk():
-   return frontdesk()
+   return frontdesk(request)
 
 @app.errorhandler(404)
 def unhandled_exception(e):
@@ -201,4 +201,4 @@ def unhandled_exception(e):
 	
 if __name__ == "__main__":
     #TOS.run(debug=True)
-    app.run(host ='192.168.99.1',port =5000)#run web application
+    app.run(host ='192.168.1.29',port =5000)#run web application
