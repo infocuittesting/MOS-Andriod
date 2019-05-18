@@ -355,3 +355,96 @@ def Frontdesk_Reminder(request):
    return json.dumps({"Return":"Success"})
 #sched.start()
 
+def Laundry_Reminder(request):
+   print("Laundry")
+   string,string1,esca_string,esca_string1 = '','','',''
+   today_date = application_datetime().strftime('%Y-%m-%d')
+   today_datetime = datetime.datetime.strptime(application_datetime().strftime('%Y-%m-%d %H:%M:%S'), "%Y-%m-%d %H:%M:%S")
+   #print("today_datetime", today_datetime, type(today_datetime))
+   query_reminder_count = json.loads(dbget("select * from ldry_request r where date(request_time)='"+str(today_date)+"' and r.ticketstatus_id=1"))
+   #print(query_reminder_count)
+   if len(query_reminder_count) != 0:        
+    for query_reminder in query_reminder_count:
+           initial = datetime.datetime.strptime(query_reminder['request_time'], "%Y-%m-%d %H:%M:%S")
+           #print('initial',initial, type(initial))
+           current  = today_datetime - initial
+           print(current)
+           minutes = int(current.seconds % 3600 / 60.0)
+           #print("minutes",minutes)
+           if 10 <= minutes < 20 :
+               
+                if query_reminder['reminder_count'] ==0:
+                   if len(string) == 0:
+                       string  = "'"+str(query_reminder['ticket_no'])+"'"
+                   else:
+                       string += ',' +"'"+str(query_reminder['ticket_no'])+"'"
+                  # print("ticket_no",string)
+                   get_employee = json.loads(dbget("select * from hotel_details"))
+                     
+                   message = "reminder 1"
+                   var = sendemailadmin(get_employee,message)
+           elif 20 <= minutes < 30 :
+               if query_reminder['reminder_count'] ==1:
+                   if len(string1) == 0:
+                       string1  = "'"+str(query_reminder['ticket_no'])+"'"
+                   else:
+                       string1 += ',' +"'"+str(query_reminder['ticket_no'])+"'"
+                   #print("ticket_no",string1)
+                   get_employee = json.loads(dbget("select * from hotel_details"))
+                     
+                   message = "reminder 2"
+                   var = sendemailadmin(get_employee,message)
+           elif 30 <= minutes < 40 :
+               if query_reminder['escalation_count'] == 0:
+                   if len(esca_string) == 0:
+                       esca_string  = "'"+str(query_reminder['ticket_no'])+"'"
+                   else:
+                       esca_string += ',' +"'"+str(query_reminder['ticket_no'])+"'"
+                   get_employee = json.loads(dbget("select * from hotel_details"))
+                     
+                   message= "escalation 1"
+                   var = sendemailadmin(get_employee,message)
+                           
+                
+           elif 40 >= minutes  :
+              if query_reminder['escalation_count'] == 1:
+                if len(esca_string1) == 0:
+                       esca_string1  = "'"+str(query_reminder['ticket_no'])+"'"
+                else:
+                       esca_string1 += ',' +"'"+str(query_reminder['ticket_no'])+"'"
+                get_employee = json.loads(dbget("select * from hotel_details"))
+                message = "escalation 2"
+                var = sendemailadmin(get_employee,message)
+                 
+           else:
+               pass
+    if len(string) == 0:
+             pass
+    else:
+             dbput("update ldry_request set reminder_count = reminder_count+'1'  where ticket_no in ("+str(string)+")")
+             string = ''
+    if len(string1) ==0:
+        pass
+    else:
+        dbput("update ldry_request set reminder_count = reminder_count+'1'  where ticket_no in ("+str(string1)+")")
+        string1 = ''
+    if len(esca_string) == 0:
+        pass
+    else:
+        
+      dbput("update ldry_request set escalation_count = escalation_count+'1'  where ticket_no in( "+str(esca_string)+")")
+      esca_string = ''
+    if len(esca_string1) == 0:
+        pass
+    else:
+        
+      dbput("update ldry_request set escalation_count = escalation_count+'1'  where ticket_no in( "+str(esca_string1)+")")
+      esca_string1  = ''
+              
+         #print(current.strftime('%M'), type(current.strftime('%M')))
+   else:
+           pass
+       
+   return json.dumps({"Return":"Success"})
+#sched.start()
+
