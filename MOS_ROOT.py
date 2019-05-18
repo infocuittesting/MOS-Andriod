@@ -17,6 +17,7 @@ from housekeeping_configuration import *
 from configure_hotelrooms import *
 from configure_hotelDepartment import *
 from configure_foodandbeverage import *
+from configure_laundry import *
 from Raise_Foodandbeverage_Request import *
 from Reminder_Escalation import *
 #below i set path for web application
@@ -133,6 +134,14 @@ def select_foodandbeverage():
 def update_foodandbeverage():
     return Update_Foodandbeverage_Items(request)
 
+@app.route("/Select_Laundry_Items",methods=['POST'])
+def select_laundry():
+    return Select_Laundry_Items(request)
+
+@app.route("/Update_Laundry_Items",methods=['POST'])
+def update_laundry():
+    return Update_Laundry_Items(request)
+
 #----------------------------------------------Raise Request
 
 @app.route("/Raise_Front_Desk_Request",methods=['POST'])
@@ -196,6 +205,10 @@ def houkee():
 @app.route("/Frontdesk_Reminder",methods=['GET'])
 def frontdk():
    return Frontdesk_Reminder(request)
+
+@app.route("/Laundry_Reminder",methods=['GET'])
+def landry():
+   return Laundry_Reminder(request)
 
 @app.errorhandler(404)
 def unhandled_exception(e):
