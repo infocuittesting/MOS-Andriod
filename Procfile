@@ -16,3 +16,4 @@ worker: gunicorn room_configuration.py
 worker: gunicorn Signup_Details.py
 worker: gunicorn sqlwrapper.py
 worker: gunicorn test_File.py
+worker: gunicorn configure_laundry.py
