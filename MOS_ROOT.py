@@ -20,6 +20,7 @@ from configure_foodandbeverage import *
 from configure_laundry import *
 from Raise_Foodandbeverage_Request import *
 from Reminder_Escalation import *
+from Raise_Laundry_Request import *
 #below i set path for web application
 
 @app.route("/",methods=['GET','POST'])
@@ -197,6 +198,19 @@ def CloseHKRequest():
 @app.route("/Query_Hk_Request",methods=['POST'])
 def QueryHkRequest():
    return Query_Hk_Request(request)
+
+#--------------------laundry request------------------
+@app.route("/Raise_Laundry_Request",methods=['POST'])
+def raiselaundryrequest():
+   return Raise_Laundry_Request(request)
+
+@app.route("/Close_Laundry_Request",methods=['POST'])
+def closelaundryrequest():
+   return Close_Laundry_Request(request)
+
+@app.route("/Query_Laundry_Request",methods=['POST'])
+def querylaundryrequest():
+   return Query_laundry_Request(request)
 #-------------------reminder------------#
 @app.route("/Foodandbeverage_Reminder",methods=['GET'])
 def fooandbev():
@@ -223,4 +237,4 @@ def unhandled_exception(e):
 	
 if __name__ == "__main__":
     #TOS.run(debug=True)
-    app.run(host ='192.168.1.29',port =5000)#run web application
+    app.run(host ='192.168.99.1',port =5000)#run web application

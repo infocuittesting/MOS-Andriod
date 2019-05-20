@@ -2,7 +2,7 @@ from sqlwrapper import *
 import re
 from Fetch_Current_Datetime import *
 
-def Raise_lanudry_request(request):
+def Raise_Laundry_Request(request):
     d=request.json
     list1 = []
     order_no = json.loads(dbget("SELECT array_to_string(ARRAY(SELECT chr((48 + round(random() * 9)) :: integer) \
@@ -13,15 +13,16 @@ def Raise_lanudry_request(request):
     values = ', '.join(map(str, list1))
     dbput("INSERT INTO  ldry_collection (ldrycollection_id, ldryitem_id, quantity)VALUES {}".format(values))
                 
-    local_tz = pytz.timezone('Asia/Tokyo')
+    #local_tz = pytz.timezone('Asia/Tokyo')
 
-    start_date = local_tz.localize(datetime(2012, 9, 27), is_dst=None)
-    now_utc = datetime.utcnow().replace(tzinfo=pytz.utc)
+    #start_date = local_tz.localize(datetime(2012, 9, 27), is_dst=None)
+    #now_utc = datetime.utcnow().replace(tzinfo=pytz.utc)
+    current_datetime=application_datetime()
 
-    ticket_no = str(now_utc.strftime("%Y-%m-%d%H:%M:%S"))+str(d['room_no'])+'foo2106'+str(order_no[0]['array_to_string'])
+    ticket_no = str(current_datetime.strftime("%Y-%m-%d%H:%M:%S"))+str(d['room_no'])+'lau1997'+str(order_no[0]['array_to_string'])
     
     d.update({'reminder_count':0,'escalation_count':0,
-              'ticketstatus_id':1,'request_time':str(now_utc.strftime("%Y-%m-%d %H:%M:%S")),
+              'ticketstatus_id':1,'request_time':str(current_datetime.strftime("%Y-%m-%d %H:%M:%S")),
               'ticket_no':re.sub("-|:","",ticket_no),'ldrycollect_id':order_no[0]['array_to_string'],'ldryitem_count':d['ldryitem_count'],'total_amount':d['total_amount']})
     print(d)
     d={k:v for k,v in d.items() if k not in ('lan_items')}
