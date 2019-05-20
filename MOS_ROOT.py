@@ -13,7 +13,6 @@ from HouseKeeping_Request import *
 from room_configuration import *
 from hotel_contact import *
 from housekeeping_configuration import *
-from Raise_Laundry_Request import *
 
 from configure_hotelrooms import *
 from configure_hotelDepartment import *
@@ -135,6 +134,10 @@ def select_foodandbeverage():
 def update_foodandbeverage():
     return Update_Foodandbeverage_Items(request)
 
+@app.route("/Configure_Laundry_Items",methods=['POST'])
+def conf_laundry():
+    return Configure_Laundry_Items(request)
+
 @app.route("/Select_Laundry_Items",methods=['POST'])
 def select_laundry():
     return Select_Laundry_Items(request)
@@ -164,18 +167,6 @@ def closefooditem():
 @app.route("/Query_Foodandbeverage_Request",methods=['POST'])
 def selectfooditem():
     return Query_Foodandbeverage_Request(request)
-
-@app.route("/Raise_Laundry_Request",methods=['POST'])
-def raiselaundryrequest():
-    return Raise_lanudry_request(request)
-
-@app.route("/Close_Laundry_Request",methods=['POST'])
-def closelaundryrequest():
-    return Close_Laundry_Request(request)
-
-@app.route("/Query_Laundry_Request",methods=['POST'])
-def querylaundryrequest():
-    return Query_laundry_Request(request)
 
 
 #----------GuestDetails-----------------------
