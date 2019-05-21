@@ -39,12 +39,13 @@ def Close_Laundry_Request(request):
 def Query_laundry_Request(request):
     d=request.json
     list1,finals = [],[]
-    details = json.loads(dbget("select r.*,c.quantity,l.ldryitem_name,l.ldryitem_image,\
-                               l.ldryitem_description,l.price,l.dept_id,lc.* from ldry_request r \
-                               join ldry_collection c on r.ldrycollect_id = c.ldrycollection_id\
-                               join laundry_items l on c.ldryitem_id = l.ldryitem_id\
-                               join laundry_category lc on l.ldrycateg_id = lc.ldrycateg_id\
-                               where r.business_id='"+str(d['business_id'])+"'"))
+    details = json.loads(dbget("select ldry_collection.quantity,\
+	laundry_items.ldryitem_name,laundry_items.ldryitem_image,laundry_items.price,\
+	laundry_category.ldrycateg_name,laundry_category.ldrycateg_image,ldry_request.* from ldry_request\
+	join ldry_collection on ldry_collection.ldrycollection_id = ldry_request.ldrycollect_id\
+	join laundry_items on laundry_items.ldryitem_id = ldry_collection.ldryitem_id\
+	join laundry_category on laundry_category.ldrycateg_id = laundry_items.ldrycateg_id\
+	where ldry_request.business_id='"+str(d['business_id'])+"'"))
     
     for detail in details:
         if detail['ticket_no'] not in list1:
