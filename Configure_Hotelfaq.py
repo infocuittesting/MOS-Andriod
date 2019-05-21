@@ -1,5 +1,5 @@
 from sqlwrapper import *
-import random
+
 
 def Insert_Hotel_Faq(request):
     d=request.json
@@ -20,5 +20,5 @@ def Select_Hotel_Faq(request):
 def Delete_Hotel_Faq(request):
     d1=request.json['hotel_faq_id']
     d2=request.json['business_id']
-    dbput("delete from hotel_contacts where number='"+d1+"'and business_id='"+d2+"'")
+    dbput("delete from hotel_faq where hotel_faq_id ='"+d1+"'and business_id='"+d2+"'")
     return(json.dumps({"Message":"Record Deleted Successfully","Message Code":"RDS","Service Status":"Success"},indent=4))
