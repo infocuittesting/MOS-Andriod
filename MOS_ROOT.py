@@ -18,9 +18,11 @@ from configure_hotelrooms import *
 from configure_hotelDepartment import *
 from configure_foodandbeverage import *
 from configure_laundry import *
+from Configure_Hotelfaq import *
 from Raise_Foodandbeverage_Request import *
 from Reminder_Escalation import *
 from Raise_Laundry_Request import *
+from Query_all_department_categories import*
 #below i set path for web application
 
 @app.route("/",methods=['GET','POST'])
