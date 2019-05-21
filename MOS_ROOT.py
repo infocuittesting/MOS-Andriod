@@ -228,6 +228,37 @@ def frontdk():
 def landry():
    return Laundry_Reminder(request)
 
+#------------------------FAQ------------------------#
+@app.route("/Insert_Hotel_Faq",methods=['POST'])
+def insert_faq():
+   return Insert_Hotel_Faq(request)
+
+@app.route("/Select_Hotel_Faq",methods=['POST'])
+def select_faq():
+   return Select_Hotel_Faq(request)
+
+@app.route("/Delete_Hotel_Faq",methods=['POST'])
+def delete_faq():
+   return Delete_Hotel_Faq(request)
+
+#------------Query category---------#
+
+@app.route("/Select_Frontdesk_Category",methods=['POST'])
+def select_Frontcate():
+   return Select_Frontdesk_Category(request)
+
+@app.route("/Select_Laundry_Category",methods=['POST'])
+def select_laundrycate():
+   return Select_Laundry_Category(request)
+
+@app.route("/Select_Food_Category",methods=['POST'])
+def select_Foodcate():
+   return Select_Food_Category(request)
+
+@app.route("/Select_Housekeeping_Category",methods=['POST'])
+def select_Hkcate():
+   return Select_Housekeeping_Category(request)
+
 @app.errorhandler(404)
 def unhandled_exception(e):
    return(json.dumps({"Return":"page Not Found","Returncode":"404"}))
