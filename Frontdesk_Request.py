@@ -6,7 +6,7 @@ def Configure_Front_Desk_Items(request):
     d = request.json
     print(d)
     check_item = json.loads(dbget("select count(*) from frontdesk_items \
-                                     where business_id='"+str(d['business_id'])+"' and fditem_name= '"+str(d['fditem_name'].title())+"'"))
+                                     where business_id='"+str(d['business_id'])+"' and fditem_names= '"+str(d['fditem_names'].title())+"'"))
     if check_item[0]['count'] == 0:
         '''
         get_category = json.loads(dbget("select count(*) from fdcategory \
