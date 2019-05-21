@@ -3,8 +3,13 @@ import random
 
 def Insert_Contact_Number(request):
     d=request.json
-    gensql('insert','hotel_contacts',d)
-    return json.dumps({"Return": "Record Inserted Successfully","ReturnCode": "RIS","Status": "Success","StatusCode": "200"},indent = 4)
+    check_item = json.loads(dbget("select count(*) from hotel_contact \
+                                     where business_id='"+str(d['business_id'])+"' and number= '"+str(d['number'].title())+"'"))
+    if check_item[0]['count'] == 0:
+        gensql('insert','hotel_contacts',d)
+        return json.dumps({"Return": "Record Inserted Successfully","ReturnCode": "RIS","Status": "Success","StatusCode": "200"},indent = 4)
+    else:
+        return json.dumps({"Return": "Record Already Inserted ","ReturnCode": "RIS","Status": "Success","StatusCode": "200"},indent = 4)
 
 def Select_Contact_Number(request):
     d=request.json

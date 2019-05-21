@@ -3,34 +3,38 @@ import random
 from Fetch_Current_Datetime import *
 def Foodandbeverage_Items(request):
     d = request.json
-    print(d) 
-    get_category = json.loads(dbget("select count(*) from food_category \
+    check_item = json.loads(dbget("select count(*) from foodandbeverage_items \
+                                     where business_id='"+str(d['business_id'])+"' and item_name= '"+str(d['item_name'].title())+"'"))
+    if check_item[0]['count'] == 0:
+        get_category = json.loads(dbget("select count(*) from food_category \
                                      where business_id='"+str(d['business_id'])+"' and foodcateg_name = '"+str(d['foodcateg_name'].title())+"'"))
     
-    if get_category[0]['count'] == 0:
-        s={"foodcateg_id":(d['foodcateg_name'][:3]+str(random.randint(1000,3000))).lower(),
-           "foodcateg_name":d['foodcateg_name'].title(),
-           "foodcateg_image":d['foodcateg_image'],
-           "business_id":d['business_id']}
-        s = {k:v for k,v in s.items() if v!= ""}
-        catogory = gensql('insert','food_category',s)
-        print("if_catogory",catogory)
+        if get_category[0]['count'] == 0:
+            s={"foodcateg_id":(d['foodcateg_name'][:3]+str(random.randint(1000,3000))).lower(),
+               "foodcateg_name":d['foodcateg_name'].title(),
+               "foodcateg_image":d['foodcateg_image'],
+               "business_id":d['business_id']}
+            s = {k:v for k,v in s.items() if v!= ""}
+            catogory = gensql('insert','food_category',s)
+            print("if_catogory",catogory)
 
        
         
-        d.update({'fbitem_id': (d['item_name'][:3]+str(random.randint(1000,3000))).lower(),"foodcategory_id":s['foodcateg_id'],"item_name":d['item_name'].title(),"item_createdon":str(application_datetime())})
-        d = {k:v for k,v in d.items() if v!= "" if k not in ('foodcateg_name','foodcateg_image')}
-        insert_item = gensql('insert','foodandbeverage_items',d)
-        print("if_insert item:",insert_item)
-    else:
-        print("ssssssssssssssssssssssssssssssss")
-        d.update({'fbitem_id': (d['item_name'][:3]+str(random.randint(1000,3000))).lower(),"foodcategory_id":str(d['foodcateg_id']),"item_name":d['item_name'].title(),"item_createdon":str(application_datetime())})
-        d = {k:v for k,v in d.items() if v!= "" if k not in ('foodcateg_name','foodcateg_image','foodcateg_id')}
-        insert_item = gensql('insert','foodandbeverage_items',d)
+            d.update({'fbitem_id': (d['item_name'][:3]+str(random.randint(1000,3000))).lower(),"foodcategory_id":s['foodcateg_id'],"item_name":d['item_name'].title(),"item_createdon":str(application_datetime())})
+            d = {k:v for k,v in d.items() if v!= "" if k not in ('foodcateg_name','foodcateg_image')}
+            insert_item = gensql('insert','foodandbeverage_items',d)
+            print("if_insert item:",insert_item)
+        else:
+            print("ssssssssssssssssssssssssssssssss")
+            d.update({'fbitem_id': (d['item_name'][:3]+str(random.randint(1000,3000))).lower(),"foodcategory_id":str(d['foodcateg_id']),"item_name":d['item_name'].title(),"item_createdon":str(application_datetime())})
+            d = {k:v for k,v in d.items() if v!= "" if k not in ('foodcateg_name','foodcateg_image','foodcateg_id')}
+            insert_item = gensql('insert','foodandbeverage_items',d)
         print("else_insert item:",insert_item)
     #return json.dumps({"Retun":d},indent=4)
 
-    return json.dumps({"Return": "Record Inserted Successfully","ReturnCode": "RIS","Status": "Success","StatusCode": "200"},indent = 4)
+        return json.dumps({"Return": "Record Inserted Successfully","ReturnCode": "RIS","Status": "Success","StatusCode": "200"},indent = 4)
+    else:
+        return json.dumps({"Return": "Record Already Inserted ","ReturnCode": "RAI","Status": "Success","StatusCode": "200"},indent = 4)
 
 def Select_Foodandbeverage_Items(request):
     d = request.json

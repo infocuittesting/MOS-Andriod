@@ -1,23 +1,12 @@
 from sqlwrapper import *
 import random
-import collections
+
 def Configure_Laundry_Items(request):
     d = request.json
-    #print(d)
-    list1 = [] 
-    d["dept_id"]="lau1997"
-    d['ldryitem_id']=d['ldryitem_name'][:3]+str(random.randint(1000,3000)).lower()
+    print(d) 
     get_category = json.loads(dbget("select count(*) from laundry_category \
                                      where business_id='"+str(d['business_id'])+"' and ldrycateg_name = '"+str(d['ldrycateg_name'].title())+"'"))
-    print(get_category)
     
-    if len(d["faqs"]) !=0:
-        for item in d['faqs']:
-            list1.append(tuple((d['ldryitem_id'],item['faqquestion'].replace("'",'"'),item['faqanswer'].replace("'",'"'),d['business_id'])))
-        values = ', '.join(map(str, list1))
-        print("dddddddddddddddddddddd",values)
-        dbput("INSERT INTO  laundry_faqs (ldryitem_id, faqquestion, faqanswer,business_id)VALUES {}".format(values))
-      
     if get_category[0]['count'] == 0:
         s={"ldrycateg_id":(d['ldrycateg_name'][:3]+str(random.randint(1000,3000))).lower(),
            "ldrycateg_name":d['ldrycateg_name'].title(),
@@ -25,19 +14,18 @@ def Configure_Laundry_Items(request):
            "business_id":d['business_id']}
         s = {k:v for k,v in s.items() if v!= ""}
         catogory = gensql('insert','laundry_category',s)
-        #print("if_catogory",catogory)
+        print("if_catogory",catogory)
         
-        d.update({"ldrycateg_id":str(s['ldrycateg_id']),"ldryitem_name":d['ldryitem_name'].title()})
-        d = {k:v for k,v in d.items() if v!= "" if k not in ('ldrycateg_name','ldrycateg_image','faqs')}
+        d.update({'ldryitem_id':(d['ldryitem_name'][:3]+str(random.randint(1000,3000))).lower(),"ldrycateg_id":str(s['ldrycateg_id']),"ldryitem_name":d['ldryitem_name'].title()})
+        d = {k:v for k,v in d.items() if v!= "" if k not in ('ldrycateg_name','ldrycateg_image')}
         insert_item = gensql('insert','laundry_items',d)
-        #print("if_insert item:",insert_item)
+        print("if_insert item:",insert_item)
     else:
         print("ssssssssssssssssssssssssssssssss")
-        d.update({"ldrycateg_id":str(d['ldrycateg_id']),"ldryitem_name":d['ldryitem_name'].title()})
-        d = {k:v for k,v in d.items() if v!= "" if k not in ('ldrycateg_name','ldrycateg_image','faqs')}
+        d.update({'ldryitem_id': (d['ldryitem_name'][:3]+str(random.randint(1000,3000))).lower(),"ldrycateg_id":str(d['ldrycateg_id']),"ldryitem_name":d['ldryitem_name'].title()})
+        d = {k:v for k,v in d.items() if v!= "" if k not in ('ldrycateg_name','ldrycateg_image','ldrycateg_id')}
         insert_item = gensql('insert','laundry_items',d)
-        #print("else_insert item:",insert_item)
-    
+        print("else_insert item:",insert_item)
     #return json.dumps({"Retun":d},indent=4)
 
     return json.dumps({"Return": "Record Inserted Successfully","ReturnCode": "RIS","Status": "Success","StatusCode": "200"},indent = 4)
@@ -45,29 +33,11 @@ def Configure_Laundry_Items(request):
 
 def Select_Laundry_Items(request):
     d = request.json
-    finals,list1=[],[]
-    lau_items = json.loads(dbget("select laundry_category.ldrycateg_name,laundry_category.ldrycateg_image,laundry_items.* \
-                                from laundry_items\
-                                join laundry_category on laundry_category.ldrycateg_id = laundry_items.ldrycateg_id\
-                                where laundry_items.business_id='"+d['business_id']+"'"))
-    lau_question = json.loads(dbget("select * from laundry_faqs where business_id='"+d['business_id']+"'"))
-    #category = [items['ldrycateg_name'] for items in lau_items]
-    #print(list(set(category)))
-    for ldry in lau_items:
-        
-        ldry['faqs']=[lau_qu for lau_qu in lau_question if ldry['ldryitem_id']==lau_qu['ldryitem_id']]
-    grouped = collections.defaultdict(list)
-    for item in lau_items:
-        grouped[item['ldrycateg_name']].append(item)
-
-    print(grouped)
-    for model, group in grouped.items():
-    #print
-    #print model
-    #pprint(group, width=150)
-       finals.append({"ldrycateg_name":model,"laundry_items":group})
+    rooms = json.loads(dbget("select li.*,lc.ldrycateg_name,lc.ldrycateg_image from laundry_items li \
+    join laundry_category lc on li.ldrycateg_id = lc.ldrycateg_id \
+    where li.business_id = '"+str(d['business_id'])+"'"))
     
-    return json.dumps({"Return": "Record Retrived Successfully","ReturnCode": "RRS","ReturnValue":finals,"Status": "Success","StatusCode": "200"},indent = 4)
+    return json.dumps({"Return": "Record Retrived Successfully","ReturnCode": "RRS","ReturnValue":rooms,"Status": "Success","StatusCode": "200"},indent = 4)
 
 
 def Update_Laundry_Items(request):

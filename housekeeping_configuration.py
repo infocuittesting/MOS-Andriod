@@ -4,9 +4,14 @@ import random
 
 def Insert_Housekeeping_Item(request):
     d = request.json
-    d.update({'hkitem_id': (str(d['hkitem_name'][:3]) +str(random.randint(100,300))).lower(),'hkitem_name':d['hkitem_name'].title()})
-    gensql('insert','housekeeping_items',d)
-    return json.dumps({"Return": "Record Inserted Successfully","ReturnCode": "RIS","Status": "Success","StatusCode": "200"},indent = 4)
+    check_item = json.loads(dbget("select count(*) from housekeeping_items \
+                                     where business_id='"+str(d['business_id'])+"' and hkitem_name= '"+str(d['hkitem_name'].title())+"'"))
+    if check_item[0]['count'] == 0:
+        d.update({'hkitem_id': (str(d['hkitem_name'][:3]) +str(random.randint(100,300))).lower(),'hkitem_name':d['hkitem_name'].title()})
+        gensql('insert','housekeeping_items',d)
+        return json.dumps({"Return": "Record Inserted Successfully","ReturnCode": "RIS","Status": "Success","StatusCode": "200"},indent = 4)
+    else:
+        return json.dumps({"Return": "Record Already Inserted ","ReturnCode": "RAI","Status": "Success","StatusCode": "200"},indent = 4)
 
 def Select_Housekeeping_Item(request):
     d= request.json

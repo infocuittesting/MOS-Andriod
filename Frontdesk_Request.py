@@ -5,31 +5,36 @@ import random
 def Configure_Front_Desk_Items(request):
     d = request.json
     print(d)
-    '''
-    get_category = json.loads(dbget("select count(*) from fdcategory \
-                                     where business_id='"+str(d['business_id'])+"' and fdcategory_name = '"+str(d['fdcategory_name'].title())+"'"))
-    if d['fdcategory_name'] != '':
-        if get_category[0]['count'] == 0:
-            s={"fdcategory_id":(d['fdcategory_name'][:3]+str(random.randint(1000,3000))).lower(),
-               "fdcategory_name":d['fdcategory_name'].title(),
-               "fdcategory_image":d['fdcategory_image'],
-               "business_id":d['business_id']}
-            s = {k:v for k,v in s.items() if v!= ""}
-            gensql('insert','fdcategory',s)
+    check_item = json.loads(dbget("select count(*) from frontdesk_items \
+                                     where business_id='"+str(d['business_id'])+"' and fditem_name= '"+str(d['fditem_name'].title())+"'"))
+    if check_item[0]['count'] == 0:
+        '''
+        get_category = json.loads(dbget("select count(*) from fdcategory \
+                                         where business_id='"+str(d['business_id'])+"' and fdcategory_name = '"+str(d['fdcategory_name'].title())+"'"))
+        if d['fdcategory_name'] != '':
+            if get_category[0]['count'] == 0:
+                s={"fdcategory_id":(d['fdcategory_name'][:3]+str(random.randint(1000,3000))).lower(),
+                   "fdcategory_name":d['fdcategory_name'].title(),
+                   "fdcategory_image":d['fdcategory_image'],
+                   "business_id":d['business_id']}
+                s = {k:v for k,v in s.items() if v!= ""}
+                gensql('insert','fdcategory',s)
 
-            
-            
-            d.update({'fditem_id': (d['fditem_names'][:3]+str(random.randint(1000,3000))).lower(),"fdcategory_id":s['fdcategory_id'],"fditem_names":d['fditem_names'].title()})
-            d = {k:v for k,v in d.items() if v!= "" if k not in ('fdcategory_name','fdcategory_image')}
-            gensql('insert','',d)
+                
+                
+                d.update({'fditem_id': (d['fditem_names'][:3]+str(random.randint(1000,3000))).lower(),"fdcategory_id":s['fdcategory_id'],"fditem_names":d['fditem_names'].title()})
+                d = {k:v for k,v in d.items() if v!= "" if k not in ('fdcategory_name','fdcategory_image')}
+                gensql('insert','',d)
+        else:
+        '''
+        d.update({'fditem_id':(d['fditem_names'][:3]+str(random.randint(1000,3000))).lower(),"fditem_names":d['fditem_names'].title()})
+        d = {k:v for k,v in d.items() if v!= "" }
+        gensql('insert','frontdesk_items',d)
+        #return json.dumps({"Retun":d},indent=4)
+
+        return json.dumps({"Return": "Record Inserted Successfully","ReturnCode": "RIS","Status": "Success","StatusCode": "200"},indent = 4)
     else:
-    '''
-    d.update({'fditem_id':(d['fditem_names'][:3]+str(random.randint(1000,3000))).lower(),"fditem_names":d['fditem_names'].title()})
-    d = {k:v for k,v in d.items() if v!= "" }
-    gensql('insert','frontdesk_items',d)
-    #return json.dumps({"Retun":d},indent=4)
-
-    return json.dumps({"Return": "Record Inserted Successfully","ReturnCode": "RIS","Status": "Success","StatusCode": "200"},indent = 4)
+        return json.dumps({"Return": "Record Already Inserted","ReturnCode": "RIS","Status": "Success","StatusCode": "200"},indent = 4)
 
 def Update_Front_Desk_Items(request):
     d = request.json

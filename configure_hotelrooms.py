@@ -2,9 +2,14 @@ from sqlwrapper import *
 import random
 
 def Insert_Hotel_room(request):
-    d=  request.json
-    gensql('insert','hotel_rooms',d)
-    return json.dumps({"Return": "Record Inserted Successfully","ReturnCode": "RIS","Status": "Success","StatusCode": "200"},indent = 4)
+    check_item = json.loads(dbget("select count(*) from hotel_rooms \
+                                     where business_id='"+str(d['business_id'])+"' and room_no= '"+str(d['room_no'].title())+"'"))
+    if check_item[0]['count'] == 0:
+        d=  request.json
+        gensql('insert','hotel_rooms',d)
+        return json.dumps({"Return": "Record Inserted Successfully","ReturnCode": "RIS","Status": "Success","StatusCode": "200"},indent = 4)
+    else:
+        return json.dumps({"Return": "Record Already Inserted","ReturnCode": "RIS","Status": "Success","StatusCode": "200"},indent = 4)
 
 def Select_Hotel_Room(request):
     d = request.json

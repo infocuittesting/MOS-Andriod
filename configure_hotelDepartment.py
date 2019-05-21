@@ -2,9 +2,14 @@ from sqlwrapper import *
 import random
 def Insert_Hotel_Department(request):
     d=  request.json
-    d.update({'dept_id': (str(d['dept_name'][:3]) +str(random.randint(1000,3000))).lower(),'dept_name':d['dept_name'].title()})
-    gensql('insert','hotel_department',d)
-    return json.dumps({"Return": "Record Inserted Successfully","ReturnCode": "RIS","Status": "Success","StatusCode": "200"},indent = 4)    
+    check_item = json.loads(dbget("select count(*) from hotel_department \
+                                     where business_id='"+str(d['business_id'])+"' and dept_name= '"+str(d['dept_name'].title())+"'"))
+    if check_item[0]['count'] == 0:
+        d.update({'dept_id': (str(d['dept_name'][:3]) +str(random.randint(1000,3000))).lower(),'dept_name':d['dept_name'].title()})
+        gensql('insert','hotel_department',d)
+        return json.dumps({"Return": "Record Inserted Successfully","ReturnCode": "RIS","Status": "Success","StatusCode": "200"},indent = 4)
+    else:
+        return json.dumps({"Return": "Record Already Inserted","ReturnCode": "RAI","Status": "Success","StatusCode": "200"},indent = 4)
 
 def pdate_Department_Login(request):
     d = request.json
