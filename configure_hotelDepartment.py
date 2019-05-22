@@ -11,7 +11,7 @@ def Insert_Hotel_Department(request):
     else:
         return json.dumps({"Return": "Record Already Inserted","ReturnCode": "RAI","Status": "Success","StatusCode": "200"},indent = 4)
 
-def pdate_Department_Login(request):
+def Update_Department_Login(request):
     d = request.json
     details = json.loads(dbget("select * from hotel_details where business_id = '"+str(d['business_id'])+"'"))
     if d['loginstatus_id'] == 1:
