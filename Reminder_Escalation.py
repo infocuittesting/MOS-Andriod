@@ -46,7 +46,7 @@ def sendemailadmin(get_employee,msges,dept):
                       <body>
                       <dl>
                       <font size="3" color="black">Dear """+name+""",</font>
-                      <dd><p><font size="3" color="black">I am writing this letter to inform you about delay request from """+Department+""" Department.
+                      <dd><p><font size="3" color="black">I am writing this letter to inform you about delay request from """+dept+""" Department.
                       Please take the action immediately, to close the guest request.
                       </font></p></dd>
                        
