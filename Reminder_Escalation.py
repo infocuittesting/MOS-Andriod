@@ -11,13 +11,13 @@ def sendemailadmin(get_employee,msges,dept):
                  print("message",msges)
                  message = "hotels"
                  conf_no = "343243245"
-                 hotel_name = get_employee[0][hotel_name]
-                 address = get_employee[0][address]
-                 state = get_employee[0][htl_state]
-                 country = get_employee[0][country]
-                 email = get_employee[0][email_id]
-                 mobile1 = get_employee[0][mobile1]
-                 mobile2 = get_employee[0][mobile2]
+                 hotel_name = get_employee[0]['hotel_name']
+                 address = get_employee[0]['address']
+                 state = get_employee[0]['htl_state']
+                 country = get_employee[0]['country']
+                 email = get_employee[0]['email_id']
+                 mobile1 = get_employee[0]['mobile1']
+                 mobile2 = get_employee[0]['mobile2']
                  arrival = "mar 3"
                  depature = "mar 4"
                  room_type ="delux"
@@ -56,14 +56,13 @@ def sendemailadmin(get_employee,msges,dept):
                      <font size="3" color="black">With best regards / Yours sincerely,</font></dd>
                      <dd>
                      <font size="3" color="black">Hotel Manager</font></dt></dd>
-                     <pre>
-                     <dd><font size="3" color="blue">Confirmation Number: """+hotel_name+"""</font>
-                     <font size="3" color="blue">Arrival Date: """+address+"""</font>
-                     <font size="3" color="blue">Depature Date: """+state+"""</font>
-                     <font size="3" color="blue">Room Type: """+country+"""</font>
-                     <font size="3" color="blue">Room Type: """+email+"""</font>
-                     <font size="3" color="blue">Room Type: """+mobile1+"""</font>
-                     <font size="3" color="blue">Room Type: """+mobile2+"""</font></dd></pre>
+                     <dd><font size="3" color="blue">"""+hotel_name+"""</font>
+                     <font size="3" color="blue"> """+address+"""</font>
+                     <font size="3" color="blue">"""+state+"""</font>
+                     <font size="3" color="blue">"""+country+"""</font>
+                     <font size="3" color="blue">"""+email+"""</font>
+                     <font size="3" color="blue">"""+str(mobile1)+"""</font>
+                     <font size="3" color="blue">"""+str(mobile2)+"""</font></dd>
                         
                       </dl>        
                       </body>
