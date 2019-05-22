@@ -188,7 +188,9 @@ def checkoutguest():
 @app.route("/Query_Guest_Details",methods=['POST'])
 def QueryGuestDetails():
     return Query_Guest_Details(request)
-
+@app.route("/Query_Billing_Details",methods=['POST'])
+def query_billing():
+    return Query_Billing_Details(request)
 #----------HouseKeeping Reqeust-----------------
 @app.route("/Raise_HK_Request",methods=['POST'])
 def RaiseHKRequest():
