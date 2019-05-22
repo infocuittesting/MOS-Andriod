@@ -13,6 +13,7 @@ from HouseKeeping_Request import *
 from room_configuration import *
 from hotel_contact import *
 from housekeeping_configuration import *
+from reportservicenew import*
 
 from configure_hotelrooms import *
 from configure_hotelDepartment import *
@@ -260,6 +261,10 @@ def select_Foodcate():
 @app.route("/Select_Housekeeping_Category",methods=['POST'])
 def select_Hkcate():
    return Select_Housekeeping_Category(request)
+#---------------------report------------------------#
+@app.route("/Room_report_request",methods=['POST'])
+def Room_Report_request():
+   return room_no_report(request)
 
 @app.errorhandler(404)
 def unhandled_exception(e):
