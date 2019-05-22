@@ -116,7 +116,7 @@ def hotel_department():
 
 @app.route("/Update_Department_Login",methods=['POST'])
 def update_department():
-    return pdate_Department_Login(request)
+    return Update_Department_Login(request)
 
 @app.route("/Update_Hotel_Department",methods=['POST'])
 def update_departments():
