@@ -5,18 +5,25 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 #from apscheduler.schedulers.blocking import BlockingScheduler
 #sched = BlockingScheduler()
-def sendemailadmin(get_employee,msges):
+def sendemailadmin(get_employee,msges,dept):
                  #email = ['infocuit.daisy@gmail.com','infocuit.aravindh@gmail.com']
-                 name = "daisy"
+                 name = "Hotel Manager"
                  print("message",msges)
                  message = "hotels"
                  conf_no = "343243245"
-                 hotel_name = "SMARTMO"
+                 hotel_name = get_employee[0][hotel_name]
+                 address = get_employee[0][address]
+                 state = get_employee[0][htl_state]
+                 country = get_employee[0][country]
+                 email = get_employee[0][email_id]
+                 mobile1 = get_employee[0][mobile1]
+                 mobile2 = get_employee[0][mobile2]
                  arrival = "mar 3"
                  depature = "mar 4"
                  room_type ="delux"
                  id1 = "324"
                  book_date = "2019-02-13"
+                 
                  #print("daisy","infocuit.aravindh@gmail.com",type(email),"eruma suhutup","98789098","mar 2","mar 3", "delux")
                  sender = "infocuit.testing@gmail.com"
                  ids = id1
@@ -38,26 +45,25 @@ def sendemailadmin(get_employee,msges):
                       </head>
                       <body>
                       <dl>
-                      <dt>
-                      <pre>
-               
-                      
-                      <font size="4" color="black">Dear """+name+""",</font>
-                      <font size="4" color="black">      We are delighted that you have selected our """""" On behalf of the entire team at the 
-                  ,extend you a very welcome and trust stay with us will be both enjoyable and comfortable
-                    offers a selection of business services and facilities.which are detailed in the booklet,
-                   placed on the writing table in your room.Should you require any assistance or have any specific
-                   requirements,please do not hesitate to contact me extension(999).</font>
-                       </pre>
-                 <pre>
-                      <font size="4" color="blue">Confirmation Number: """+conf_no+"""</font>
-                      <font size="4" color="blue">Arrival Date: """+arrival+"""</font>
-                      <font size="4" color="blue">Depature Date: """+depature+"""</font>
-                      <font size="4" color="blue">Room Type: """+room_type+"""</font>
+                      <font size="3" color="black">Dear """+name+""",</font>
+                      <dd><p><font size="3" color="black">I am writing this letter to inform you about delay request from """+Department+""" Department.
+                      Please take the action immediately, to close the guest request.
+                      </font></p></dd>
+                       
                      
-
-                      <font size="4" color="black">With best regards / Yours sincerely,</font>
-                      <font size="4" color="black">Hotel Manager</font></pre>
+                     
+                     <dd>     
+                     <font size="3" color="black">With best regards / Yours sincerely,</font></dd>
+                     <dd>
+                     <font size="3" color="black">Hotel Manager</font></dt></dd>
+                     <pre>
+                     <dd><font size="3" color="blue">Confirmation Number: """+hotel_name+"""</font>
+                     <font size="3" color="blue">Arrival Date: """+address+"""</font>
+                     <font size="3" color="blue">Depature Date: """+state+"""</font>
+                     <font size="3" color="blue">Room Type: """+country+"""</font>
+                     <font size="3" color="blue">Room Type: """+email+"""</font>
+                     <font size="3" color="blue">Room Type: """+mobile1+"""</font>
+                     <font size="3" color="blue">Room Type: """+mobile2+"""</font></dd></pre>
                         
                       </dl>        
                       </body>
@@ -104,7 +110,8 @@ def Foodandbeverage_Reminder(request):
                    get_employee = json.loads(dbget("select * from hotel_details"))
                      
                    message = "reminder 1"
-                   var = sendemailadmin(get_employee,message)
+                   dept = "Foodandbeverage"
+                   var = sendemailadmin(get_employee,message,dept)
            elif 20 <= minutes < 30 :
                if query_reminder['reminder_count'] ==1:
                    if len(string1) == 0:
@@ -115,7 +122,8 @@ def Foodandbeverage_Reminder(request):
                    get_employee = json.loads(dbget("select * from hotel_details"))
                      
                    message = "reminder 2"
-                   var = sendemailadmin(get_employee,message)
+                   dept = "Foodandbeverage" 
+                   var = sendemailadmin(get_employee,message,dept)
            elif 30 <= minutes < 40 :
                if query_reminder['escalation_count'] == 0:
                    if len(esca_string) == 0:
@@ -125,7 +133,8 @@ def Foodandbeverage_Reminder(request):
                    get_employee = json.loads(dbget("select * from hotel_details"))
                      
                    message= "escalation 1"
-                   var = sendemailadmin(get_employee,message)
+                   dept = "Foodandbeverage"
+                   var = sendemailadmin(get_employee,message,dept)
                            
                 
            elif 40 >= minutes  :
@@ -136,7 +145,8 @@ def Foodandbeverage_Reminder(request):
                        esca_string1 += ',' +"'"+str(query_reminder['ticket_no'])+"'"
                 get_employee = json.loads(dbget("select * from hotel_details"))
                 message = "escalation 2"
-                var = sendemailadmin(get_employee,message)
+                dept = "Foodandbeverage"
+                var = sendemailadmin(get_employee,message,dept)
                  
            else:
                pass
@@ -196,7 +206,8 @@ def Housekeeping_Reminder(request):
                    get_employee = json.loads(dbget("select * from hotel_details"))
                      
                    message = "reminder 1"
-                   var = sendemailadmin(get_employee,message)
+                   dept = "Housekeeping"
+                   var = sendemailadmin(get_employee,message,dept)
            elif 20 <= minutes < 30 :
                if query_reminder['reminder_count'] ==1:
                    if len(string1) == 0:
@@ -207,7 +218,8 @@ def Housekeeping_Reminder(request):
                    get_employee = json.loads(dbget("select * from hotel_details"))
                      
                    message = "reminder 2"
-                   var = sendemailadmin(get_employee,message)
+                   dept = "Housekeeping"
+                   var = sendemailadmin(get_employee,message,dept)
            elif 30 <= minutes < 40 :
                if query_reminder['escalation_count'] == 0:
                    if len(esca_string) == 0:
@@ -217,7 +229,8 @@ def Housekeeping_Reminder(request):
                    get_employee = json.loads(dbget("select * from hotel_details"))
                      
                    message= "escalation 1"
-                   var = sendemailadmin(get_employee,message)
+                   dept = "Housekeeping"
+                   var = sendemailadmin(get_employee,message,dept)
                            
                 
            elif 40 >= minutes  :
@@ -228,7 +241,8 @@ def Housekeeping_Reminder(request):
                        esca_string1 += ',' +"'"+str(query_reminder['ticket_no'])+"'"
                 get_employee = json.loads(dbget("select * from hotel_details"))
                 message = "escalation 2"
-                var = sendemailadmin(get_employee,message)
+                dept = "Housekeeping"
+                var = sendemailadmin(get_employee,message,dept)
                  
            else:
                pass
@@ -289,7 +303,8 @@ def Frontdesk_Reminder(request):
                    get_employee = json.loads(dbget("select * from hotel_details"))
                      
                    message = "reminder 1"
-                   var = sendemailadmin(get_employee,message)
+                   dept = "Frontdesk"
+                   var = sendemailadmin(get_employee,message,dept)
            elif 20 <= minutes < 30 :
                if query_reminder['reminder_count'] ==1:
                    if len(string1) == 0:
@@ -300,7 +315,8 @@ def Frontdesk_Reminder(request):
                    get_employee = json.loads(dbget("select * from hotel_details"))
                      
                    message = "reminder 2"
-                   var = sendemailadmin(get_employee,message)
+                   dept = "Frontdesk"
+                   var = sendemailadmin(get_employee,message,dept)
            elif 30 <= minutes < 40 :
                if query_reminder['escalation_count'] == 0:
                    if len(esca_string) == 0:
@@ -310,7 +326,8 @@ def Frontdesk_Reminder(request):
                    get_employee = json.loads(dbget("select * from hotel_details"))
                      
                    message= "escalation 1"
-                   var = sendemailadmin(get_employee,message)
+                   dept = "Frontdesk"
+                   var = sendemailadmin(get_employee,message,dept)
                            
                 
            elif 40 >= minutes  :
@@ -321,7 +338,8 @@ def Frontdesk_Reminder(request):
                        esca_string1 += ',' +"'"+str(query_reminder['ticket_no'])+"'"
                 get_employee = json.loads(dbget("select * from hotel_details"))
                 message = "escalation 2"
-                var = sendemailadmin(get_employee,message)
+                dept = "Frontdesk"
+                var = sendemailadmin(get_employee,message,dept)
                  
            else:
                pass
@@ -382,7 +400,8 @@ def Laundry_Reminder(request):
                    get_employee = json.loads(dbget("select * from hotel_details"))
                      
                    message = "reminder 1"
-                   var = sendemailadmin(get_employee,message)
+                   dept = "Laundry"
+                   var = sendemailadmin(get_employee,message,dept)
            elif 20 <= minutes < 30 :
                if query_reminder['reminder_count'] ==1:
                    if len(string1) == 0:
@@ -393,7 +412,8 @@ def Laundry_Reminder(request):
                    get_employee = json.loads(dbget("select * from hotel_details"))
                      
                    message = "reminder 2"
-                   var = sendemailadmin(get_employee,message)
+                   dept = "Laundry"
+                   var = sendemailadmin(get_employee,message,dept)
            elif 30 <= minutes < 40 :
                if query_reminder['escalation_count'] == 0:
                    if len(esca_string) == 0:
@@ -403,7 +423,8 @@ def Laundry_Reminder(request):
                    get_employee = json.loads(dbget("select * from hotel_details"))
                      
                    message= "escalation 1"
-                   var = sendemailadmin(get_employee,message)
+                   dept = "Laundry"
+                   var = sendemailadmin(get_employee,message,dept)
                            
                 
            elif 40 >= minutes  :
@@ -414,7 +435,8 @@ def Laundry_Reminder(request):
                        esca_string1 += ',' +"'"+str(query_reminder['ticket_no'])+"'"
                 get_employee = json.loads(dbget("select * from hotel_details"))
                 message = "escalation 2"
-                var = sendemailadmin(get_employee,message)
+                dept = "Laundry"
+                var = sendemailadmin(get_employee,message,dept)
                  
            else:
                pass
