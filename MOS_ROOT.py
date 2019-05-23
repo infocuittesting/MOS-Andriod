@@ -14,6 +14,7 @@ from room_configuration import *
 from hotel_contact import *
 from housekeeping_configuration import *
 from reportservicenew import*
+from Query_front_desk_items import *
 
 from configure_hotelrooms import *
 from configure_hotelDepartment import *
