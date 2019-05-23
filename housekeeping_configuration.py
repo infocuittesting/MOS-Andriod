@@ -1,14 +1,21 @@
 from sqlwrapper import *
 import random
-
+import requests
 
 def Insert_Housekeeping_Item(request):
     d = request.json
     check_item = json.loads(dbget("select count(*) from housekeeping_items \
                                      where business_id='"+str(d['business_id'])+"' and hkitem_name= '"+str(d['hkitem_name'].title())+"'"))
+    if len(d['hkitem_image']) != 0:
+                r = requests.post("https://k746kt3782.execute-api.us-east-1.amazonaws.com/mos-android_imageupload",json={"base64":d['hkitem_image'],"branch_name":d['branch_name']})
+                data = r.json()
+                d['hkitem_image'] = data['body']['url']
+    else:
+        pass
     if check_item[0]['count'] == 0:
         d.update({'hkitem_id': (str(d['hkitem_name'][:3]) +str(random.randint(100,300))).lower(),'hkitem_name':d['hkitem_name'].title()})
-        gensql('insert','housekeeping_items',d)
+        a = {k:v for k,v in d.items() if v is not None if k not in ('branch_name')}
+        gensql('insert','housekeeping_items',a)
         return json.dumps({"Return": "Record Inserted Successfully","ReturnCode": "RIS","Status": "Success","StatusCode": "200"},indent = 4)
     else:
         return json.dumps({"Return": "Record Already Inserted ","ReturnCode": "RAI","Status": "Success","StatusCode": "200"},indent = 4)
@@ -23,6 +30,12 @@ def Select_Housekeeping_Item(request):
 
 def Update_Housekeeping_Item(request):
     d= request.json
+    if len(d['hkitem_image']) != 0:
+                r = requests.post("https://k746kt3782.execute-api.us-east-1.amazonaws.com/mos-android_imageupload",json={"base64":d['hkitem_image'],"branch_name":d['branch_name']})
+                data = r.json()
+                d['hkitem_image'] = data['body']['url']
+    else:
+        pass
     b={k : v for k,v in d.items() if k in ('hkitem_image','hkitem_name','hkitemcateg_id')}
     c={ k : v for k,v in d.items() if k in('business_id','hkitem_id')}
     sql=gensql('update','housekeeping_items',b,c)
