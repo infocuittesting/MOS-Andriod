@@ -1,6 +1,7 @@
 from sqlwrapper import *
 import random
 import requests
+import collections
 
 def Insert_Housekeeping_Item(request):
     d = request.json
@@ -22,11 +23,23 @@ def Insert_Housekeeping_Item(request):
 
 def Select_Housekeeping_Item(request):
     d= request.json
+    finals = []
     output = json.loads(dbget("select housekeeping_items.*, housekeeping_category.hkcateg_name,\
                     housekeeping_category.hkcateg_image\
                     from housekeeping_items join  housekeeping_category on \
                     housekeeping_items.hkitemcateg_id=housekeeping_category.hkcateg_id where housekeeping_items.business_id='"+str(d['business_id'])+"' "))
-    return(json.dumps({"Message":"Record Selected Successfully","Message_Code":"RSS","Service_Status":"Success","output":output},indent=4))
+    grouped = collections.defaultdict(list)
+    for item in output:
+        
+        grouped[item['hkcateg_name']].append(item)
+
+    print(grouped)
+    for model, group in grouped.items():
+    #print
+    #print model
+    #pprint(group, width=150)
+       finals.append({"hkcateg_name":model,"housekeeping_items":group})
+    return(json.dumps({"Message":"Record Selected Successfully","Message_Code":"RSS","Service_Status":"Success","output":finals},indent=4))
 
 def Update_Housekeeping_Item(request):
     d= request.json
