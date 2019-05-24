@@ -27,8 +27,14 @@ def Select_Hotel_Room(request):
 
 def Update_Room_Login(request):
     d = request.json
-    b={k : v for k,v in d.items() if k in ('loginstatus_id')}
-    c={ k : v for k,v in d.items() if k in('business_id','room_no')}
-    sql=gensql('update','hotel_rooms',b,c)
-    print("status",sql)
-    return json.dumps({"Return": "Room Login Successfully","ReturnCode": "RLS","Status": "Success","StatusCode": "200"},indent = 4)
+    psql = json.loads(dbget("select count(loginstatus_id) from hotel_rooms where business_id ='"+str(d['business_id'])+"'\
+                    and loginstatus_id = '"+str(d['loginstatus_id'])+"' and room_no = '"+str(d['room_no'])+"'"))
+    if psql[0]['count'] == 0:
+        b={k : v for k,v in d.items() if k in ('loginstatus_id')}
+        c={ k : v for k,v in d.items() if k in('business_id','room_no')}
+        sql=gensql('update','hotel_rooms',b,c)
+        print("status",sql)
+        return json.dumps({"Return": "Room Login Successfully","ReturnCode": "RLS","Status": "Success","StatusCode": "200"},indent = 4)
+        
+    else:
+        return json.dumps({"Return": "Already login Successfully","ReturnCode": "ALS","Status": "Success","StatusCode": "200"},indent = 4)
