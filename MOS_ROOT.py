@@ -25,6 +25,7 @@ from Raise_Foodandbeverage_Request import *
 from Reminder_Escalation import *
 from Raise_Laundry_Request import *
 from Query_all_department_categories import*
+from alexa_Notification import *
 #below i set path for web application
 
 @app.route("/",methods=['GET','POST'])
@@ -281,6 +282,11 @@ def select_Hkcate():
 @app.route("/Room_report_request",methods=['POST'])
 def Room_Report_request():
    return room_no_report(request)
+#--------------------alexa notification------------------#
+@app.route("/Alexa_Notification",methods=['POST'])
+def notification():
+    return Alexa_Notification(request)
+#----------------------------------------------------#
 
 @app.errorhandler(404)
 def unhandled_exception(e):
