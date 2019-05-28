@@ -28,13 +28,13 @@ def Configure_Laundry_Items(request):
         #print("if_catogory",catogory)
         
         d.update({"ldrycateg_id":str(s['ldrycateg_id']),"ldryitem_name":d['ldryitem_name'].title()})
-        d = {k:v for k,v in d.items() if v!= "" if k not in ('ldrycateg_name','ldrycateg_image','faqs')}
+        d = {k:v for k,v in d.items() if v!= "" if k not in ('ldrycateg_name','ldrycateg_image','faqs','branch_name')}
         insert_item = gensql('insert','laundry_items',d)
         #print("if_insert item:",insert_item)
     else:
         print("ssssssssssssssssssssssssssssssss")
         d.update({"ldrycateg_id":str(d['ldrycateg_id']),"ldryitem_name":d['ldryitem_name'].title()})
-        d = {k:v for k,v in d.items() if v!= "" if k not in ('ldrycateg_name','ldrycateg_image','faqs')}
+        d = {k:v for k,v in d.items() if v!= "" if k not in ('ldrycateg_name','ldrycateg_image','faqs','branch_name')}
         insert_item = gensql('insert','laundry_items',d)
         #print("else_insert item:",insert_item)
     
