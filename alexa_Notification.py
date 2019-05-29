@@ -10,7 +10,7 @@ def Alexa_Notification(request):
    current_datetime=application_datetime()
    print(current_datetime[0])
    print(current_datetime[1])
-   print(d['user_Id'],type(d['user_Id']))
+   #print(d['user_Id'],type(d['user_Id']))
    url='https://api.amazon.com/auth/O2/token'
    headers = {
    'Content-Type': 'application/x-www-form-urlencoded',
