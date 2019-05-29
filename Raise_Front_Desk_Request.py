@@ -24,9 +24,11 @@ def Close_Front_Desk_Request(request):
 def Query_Front_Desk_Request(request):
     
     d=request.json
+    current_datetime=application_datetime().date()
     details = json.loads(dbget("select ticketstatus,fdcategory_name,fdcategory_image,fditem_names,fditem_image,fd_requests.* from fd_requests\
 				join frontdesk_items on frontdesk_items.fditem_id=fd_requests.fditem_id\
 				join fdcategory on fdcategory.fdcategory_id = frontdesk_items.fdcategory_id\
 				join ticket_status on ticket_status.ticketstatus_id = fd_requests.ticketstatus_id\
-				where fd_requests.business_id='"+d['business_id']+"' and frontdesk_items.business_id='"+d['business_id']+"' and fdcategory.business_id='"+d['business_id']+"'"))
+			where fd_requests.business_id='"+d['business_id']+"' and frontdesk_items.business_id='"+d['business_id']+"' \
+                        and fdcategory.business_id='"+d['business_id']+"' and date(request_time) = '"+str(current_datetime)+"'"))
     return json.dumps({"Return": "Record Retrived Successfully","ReturnCode": "RRS","Returnvalue":details,"Status": "Success","StatusCode": "200"},indent = 4)

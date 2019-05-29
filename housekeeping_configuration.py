@@ -53,5 +53,16 @@ def Update_Housekeeping_Item(request):
     c={ k : v for k,v in d.items() if k in('business_id','hkitem_id')}
     sql=gensql('update','housekeeping_items',b,c)
     return json.dumps({"Return": "Record Updated Successfully","ReturnCode": "RUS","Status": "Success","StatusCode": "200"},indent = 4)
+
+def Select_Housekeeping_Item_for_angular(request):
+    d= request.json
+  
+    output = json.loads(dbget("select housekeeping_items.*, housekeeping_category.hkcateg_name,\
+                    housekeeping_category.hkcateg_image\
+                    from housekeeping_items join  housekeeping_category on \
+                    housekeeping_items.hkitemcateg_id=housekeeping_category.hkcateg_id where housekeeping_items.business_id='"+str(d['business_id'])+"' "))
+    return(json.dumps({"Message":"Record Selected Successfully","Message_Code":"RSS","Service_Status":"Success","output":output},indent=4))
+
+
     
 

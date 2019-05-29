@@ -36,6 +36,7 @@ def Query_Foodandbeverage_Request(request):
     
     d=request.json
     list1,finals = [],[]
+    current_datetime=application_datetime().date()
     details = json.loads(dbget("select f.item_name,fc.quantity,f.item_description,f.price,f.item_image,\
                f.item_createdon,f.dept_id,c.*,t.*,s.*,r.* from fb_requests r\
     join fb_collection fc on fc.fbcollection_id = r.fbcollection_id\
@@ -43,7 +44,7 @@ def Query_Foodandbeverage_Request(request):
     join food_category c on f.foodcategory_id = c.foodcateg_id\
     join foodtype t on f.foodtype_id = t.foodtype_id\
     join todayspecial s on f.todayspecial_id = s.todayspecial_id\
-    where r.business_id='"+str(d['business_id'])+"' "))
+    where r.business_id='"+str(d['business_id'])+"' and date(request_time) = '"+str(current_datetime)+"' "))
     
     for detail in details:
         if detail['ticket_no'] not in list1:

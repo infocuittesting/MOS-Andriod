@@ -82,4 +82,15 @@ def Update_Laundry_Items(request):
     b={k : v for k,v in d.items() if k in ('ldryitem_name','ldrycateg_id','ldryitem_description','price')}
     c={ k : v for k,v in d.items() if k in('ldryitem_id','business_id')}
     sql=gensql('update','laundry_items',b,c)
-    return json.dumps({"Return": "Record Updated Successfully","ReturnCode": "RUS","Status": "Success","StatusCode": "200"},indent = 4)       
+    return json.dumps({"Return": "Record Updated Successfully","ReturnCode": "RUS","Status": "Success","StatusCode": "200"},indent = 4)
+
+def Select_Laundry_For_Angular(request):
+    d = request.json
+
+    lau_items = json.loads(dbget("select laundry_category.ldrycateg_name,laundry_category.ldrycateg_image,laundry_items.* \
+                                from laundry_items\
+                                join laundry_category on laundry_category.ldrycateg_id = laundry_items.ldrycateg_id\
+                                where laundry_items.business_id='"+d['business_id']+"'"))
+    return json.dumps({"Return": "Record Retrived Successfully","ReturnCode": "RRS","ReturnValue":lau_items,"Status": "Success","StatusCode": "200"},indent = 4)
+
+    

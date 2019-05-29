@@ -29,6 +29,8 @@ def Close_HK_Request(request):
 def Query_Hk_Request(request):
 
    d=request.json
+   current_datetime=application_datetime().date()
+   print("current_datetime",current_datetime)
 
    records = json.loads(dbget("select hk_requests.ticket_no,ticket_status.*,hk_requests.room_no,\
                                hk_requests.reminder_count,hk_requests.escalation_count,hk_requests.request_time,\
@@ -42,7 +44,8 @@ def Query_Hk_Request(request):
 	                       housekeeping_category.hkcateg_id \
 	                       where hk_requests.business_id='"+str(d['business_id'])+"' and \
                                housekeeping_items.business_id='"+str(d['business_id'])+"' \
-	                       and housekeeping_category.business_id='"+str(d['business_id'])+"' "))
+	                       and housekeeping_category.business_id='"+str(d['business_id'])+"'\
+                               and date(request_time) = '"+str(current_datetime)+"'"))
    
    return json.dumps({"Return": "Record Retrived Successfully","ReturnCode": "RRS",
                       "Returnvalue":records,"Status": "Success","StatusCode": "200"},indent = 4)    

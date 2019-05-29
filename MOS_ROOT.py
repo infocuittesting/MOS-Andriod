@@ -58,6 +58,16 @@ def updatefrontdeskitems():
 @app.route("/Select_Front_Desk_Items",methods=['POST'])
 def selectfrontdeskitems():
     return Select_Front_Desk_Items(request)
+
+@app.route("/Select_Frontdesk_Extra_Items",methods=['POST'])
+def Selectfrontdeskextraitems():
+    return Select_Frontdesk_Extra_Items(request)
+
+@app.route("/Select_Traveldesk_Items",methods=['POST'])
+def Selecttraveldeskitems():
+    return Select_Traveldesk_Items(request)
+
+
 #--------------------select_frontdesk_category_wise_items--------------#
 
 @app.route("/Select_Travel_Desk_Items",methods=['POST'])
@@ -109,6 +119,11 @@ def selecthousekeepingitem():
 @app.route("/Update_Housekeeping_Item",methods=['POST'])
 def updatehousekeepingitem():
    return Update_Housekeeping_Item(request)
+
+@app.route("/Select_Housekeeping_Item_for_angular",methods=['POST'])
+def Selecthousekeepingitemforangular():
+   return Select_Housekeeping_Item_for_angular(request)
+
 #configure hotel rooms*******************************
 
 @app.route("/Insert_Hotel_room",methods=['POST'])
@@ -152,7 +167,7 @@ def select_foodandbeverage():
 @app.route("/Update_Foodandbeverage_Items",methods=['POST'])
 def update_foodandbeverage():
     return Update_Foodandbeverage_Items(request)
-
+#---------------------configure_laundry------------------#
 @app.route("/Configure_Laundry_Items",methods=['POST'])
 def conf_laundry():
     return Configure_Laundry_Items(request)
@@ -164,6 +179,10 @@ def select_laundry():
 @app.route("/Update_Laundry_Items",methods=['POST'])
 def update_laundry():
     return Update_Laundry_Items(request)
+
+@app.route("/Select_Laundry_For_Angular",methods=['POST'])
+def configurelaundryforangular():
+    return Select_Laundry_For_Angular(request)
 
 #----------------------------------------------Raise Request
 
