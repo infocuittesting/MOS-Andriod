@@ -83,5 +83,5 @@ def Alexa_Notification(request):
 
    }
    notifcation_send = requests.post(api_url,headers=request_header,json =notify_json )
-   print("notification_send:",notifcation_send.json())
+   print("notification_send:",notifcation_send)
    return json.dumps({"Return": "Run Successfully"})
