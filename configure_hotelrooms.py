@@ -2,10 +2,11 @@ from sqlwrapper import *
 import random
 
 def Insert_Hotel_room(request):
+    d=  request.json
+    d.update( {'roomstatus_id' : 2,'loginstatus_id':2} )
     check_item = json.loads(dbget("select count(*) from hotel_rooms \
-                                     where business_id='"+str(d['business_id'])+"' and room_no= '"+str(d['room_no'].title())+"'"))
+                                     where business_id='"+str(d['business_id'])+"' and room_no= '"+str(d['room_no'])+"'"))
     if check_item[0]['count'] == 0:
-        d=  request.json
         gensql('insert','hotel_rooms',d)
         return json.dumps({"Return": "Record Inserted Successfully","ReturnCode": "RIS","Status": "Success","StatusCode": "200"},indent = 4)
     else:
@@ -30,11 +31,17 @@ def Update_Room_Login(request):
     psql = json.loads(dbget("select count(loginstatus_id) from hotel_rooms where business_id ='"+str(d['business_id'])+"'\
                     and loginstatus_id = '"+str(d['loginstatus_id'])+"' and room_no = '"+str(d['room_no'])+"'"))
     if psql[0]['count'] == 0:
-        b={k : v for k,v in d.items() if k in ('loginstatus_id')}
-        c={ k : v for k,v in d.items() if k in('business_id','room_no')}
-        sql=gensql('update','hotel_rooms',b,c)
-        print("status",sql)
-        return json.dumps({"Return": "Room Login Successfully","ReturnCode": "RLS","Status": "Success","StatusCode": "200"},indent = 4)
+        if d['loginstatus_id'] == 1 :
+            b={k : v for k,v in d.items() if k in ('loginstatus_id')}
+            c={ k : v for k,v in d.items() if k in('business_id','room_no')}
+            sql=gensql('update','hotel_rooms',b,c)
+            print("status",sql)
+            return json.dumps({"Return": "Log In Successfully","ReturnCode": "LIS","Status": "Success","StatusCode": "200"},indent = 4)
         
+        else:
+            b={k : v for k,v in d.items() if k in ('loginstatus_id')}
+            c={ k : v for k,v in d.items() if k in('room_no','business_id')}
+            sql=gensql('update','hotel_rooms',b,c)
+            return json.dumps({"Return": "Log Out Successfully","ReturnCode": "LOS","Status": "Success","StatusCode": "200"},indent = 4)
     else:
-        return json.dumps({"Return": "Already login Successfully","ReturnCode": "ALS","Status": "Success","StatusCode": "200"},indent = 4)
+        return json.dumps({"Return": "Already Login/LogOut Successfully","ReturnCode": "ALS","Status": "Success","StatusCode": "200"},indent = 4)
