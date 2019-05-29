@@ -6,81 +6,82 @@ import json
 
 
 def Alexa_Notification(request):
-    d = request.json
-    current_datetime=application_datetime()
-    print(current_datetime[0])
-    print(current_datetime[1])
-    url='https://api.amazon.com/auth/O2/token'
-    headers = {
-    'Content-Type': 'application/x-www-form-urlencoded',
-    }
-    payload={'grant_type':'client_credentials','client_id':'amzn1.application-oa2-client.55fd9f1470dd422b91e5f451c4029457',
-        'client_secret':'1f5688a0b474c57e6b7335e4913d200b3410dc0116e1338cbf225d361eca762e','scope':'alexa::proactive_events'
-    }
-    s = requests.post(url, headers=headers, data=payload)
-    token_res = s.json()
-    print(token_res['access_token'])
-    request_header={'Authorization': 'Bearer {}'.format(token_res['access_token']),"Content-Type":"application/json"}
-	
-    api_url='https://api.amazonalexa.com/v1/proactiveEvents/stages/development'
-
+   d = request.json
+   current_datetime=application_datetime()
+   print(current_datetime[0])
+   print(current_datetime[1])
+   print(d['user_Id'],type(d['user_Id']))
+   url='https://api.amazon.com/auth/O2/token'
+   headers = {
+   'Content-Type': 'application/x-www-form-urlencoded',
+   }
+   payload={'grant_type':'client_credentials','client_id':'amzn1.application-oa2-client.55fd9f1470dd422b91e5f451c4029457',
+       'client_secret':'1f5688a0b474c57e6b7335e4913d200b3410dc0116e1338cbf225d361eca762e','scope':'alexa::proactive_events'
+   }
+   s = requests.post(url, headers=headers, data=payload)
+   token_res = s.json()
+   print(token_res['access_token'])
+   request_header={'Authorization': 'Bearer {}'.format(token_res['access_token']),"Content-Type":"application/json"}
     
+   api_url='https://api.amazonalexa.com/v1/proactiveEvents/stages/development'
 
-    
 
-    notify_json = {
 
-      
-        "timestamp": str(current_datetime[0]),
-        "referenceId": "orangetango2221800f44-436a-4c47-8d9f-e14356bb010c",
 
-       
-        "expiryTime": str(current_datetime[0]),
-        "event": {
 
-            "name": "AMAZON.MessageAlert.Activated",
+   notify_json = {
 
-            "payload": {
 
-                "state": {
+       "timestamp": str(current_datetime[0]),
+       "referenceId": "orangetango2221800f44-436a-4c47-8d9f-e14356bb010c",
 
-                    "status": "UNREAD",
 
-                    "freshness": "NEW"
+       "expiryTime": str(current_datetime[0]),
+       "event": {
 
-                },
+           "name": "AMAZON.MessageAlert.Activated",
 
-                "messageGroup": {
+           "payload": {
 
-                    "creator": {
+               "state": {
 
-                        "name": str(d['Object'])+"reuest has been closed"
+                   "status": "UNREAD",
 
-                    },
+                   "freshness": "NEW"
 
-                    "count": 1,
+               },
 
-                    "urgency": "URGENT"
+               "messageGroup": {
 
-                }
+                   "creator": {
 
-            }
+                       "name": str(d['Object'])+"request has been closed"
 
-        },
+                   },
 
-        "relevantAudience": {
+                   "count": 1,
 
-            "type": "Unicast",
+                   "urgency": "URGENT"
 
-            "payload": {
+               }
 
-                "user_Id":str(d['user_Id'])
+           }
 
-            }
+       },
 
-        }
+       "relevantAudience": {
 
-    }
-    notifcation_send = requests.post(api_url,headers=request_header,json =notify_json )
-    print("notification_send:",notifcation_send)
-    return json.dumps({"Return": "Run Successfully"})
+           "type": "Unicast",
+
+           "payload": {
+
+               "user":d['user_Id']
+
+           }
+
+       }
+
+   }
+   notifcation_send = requests.post(api_url,headers=request_header,json =notify_json )
+   print("notification_send:",notifcation_send.json())
+   return json.dumps({"Return": "Run Successfully"})
