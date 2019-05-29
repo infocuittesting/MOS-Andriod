@@ -26,6 +26,7 @@ from Reminder_Escalation import *
 from Raise_Laundry_Request import *
 from Query_all_department_categories import*
 from alexa_Notification import *
+from guest_profile import *
 #below i set path for web application
 
 @app.route("/",methods=['GET','POST'])
@@ -306,6 +307,17 @@ def Room_Report_request():
 def notification():
     return Alexa_Notification(request)
 #----------------------------------------------------#
+@app.route("/Insert_Guest_Profile",methods=['POST'])
+def insertguestprofile():
+    return Insert_Guest_Profile(request)
+
+@app.route("/Select_Guest_Profile",methods=['POST'])
+def selectguestprofile():
+    return Select_Guest_Profile(request)
+
+@app.route("/Update_Guest_profile",methods=['POST'])
+def updateguestprofile():
+    return Update_Guest_profile(request)
 
 @app.errorhandler(404)
 def unhandled_exception(e):
