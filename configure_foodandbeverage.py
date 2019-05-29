@@ -4,6 +4,7 @@ from Fetch_Current_Datetime import *
 import requests
 def Foodandbeverage_Items(request):
     d = request.json
+    d.update({'dept_id':'foo2106'})
     check_item = json.loads(dbget("select count(*) from foodandbeverage_items \
                                      where business_id='"+str(d['business_id'])+"' and item_name= '"+str(d['item_name'].title())+"'"))
     if check_item[0]['count'] == 0:
