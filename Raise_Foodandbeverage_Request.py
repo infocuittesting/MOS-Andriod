@@ -37,20 +37,24 @@ def Query_Foodandbeverage_Request(request):
     d=request.json
     list1,finals = [],[]
     current_datetime=application_datetime().date()
-    details = json.loads(dbget("select f.item_name,fc.quantity,f.item_description,f.price,f.item_image,\
-               f.item_createdon,f.dept_id,c.*,t.*,s.*,r.* from fb_requests r\
-    join fb_collection fc on fc.fbcollection_id = r.fbcollection_id\
-    join foodandbeverage_items f  on fc.fbitem_id = f.fbitem_id\
-    join food_category c on f.foodcategory_id = c.foodcateg_id\
-    join foodtype t on f.foodtype_id = t.foodtype_id\
-    join todayspecial s on f.todayspecial_id = s.todayspecial_id\
-    where r.business_id='"+str(d['business_id'])+"' and date(request_time) = '"+str(current_datetime)+"' "))
-    
+    details = json.loads(dbget("select guest_profile.guest_name,foodandbeverage_items.item_name,fb_collection.quantity,foodandbeverage_items.item_description,\
+                foodandbeverage_items.price,foodandbeverage_items.item_image,\
+                foodandbeverage_items.item_createdon,foodandbeverage_items.dept_id,food_category.*,foodtype.*,todayspecial.*,fb_requests.* from fb_requests \
+                join fb_collection on fb_collection.fbcollection_id = fb_requests.fbcollection_id\
+                join foodandbeverage_items  on fb_collection.fbitem_id = foodandbeverage_items.fbitem_id\
+                join food_category  on foodandbeverage_items.foodcategory_id = food_category.foodcateg_id\
+                join foodtype on foodandbeverage_items.foodtype_id = foodtype.foodtype_id\
+                join todayspecial on foodandbeverage_items.todayspecial_id =todayspecial.todayspecial_id\
+                join guest_details  on guest_details.room_no = fb_requests.room_no\
+                join guest_profile on guest_profile.mobile = guest_details.mobile_no\
+                where fb_requests.business_id='"+str(d['business_id'])+"'\
+                and date(request_time) = '"+str(current_datetime)+"' "))
+    print(details)
     for detail in details:
         if detail['ticket_no'] not in list1:
             #print(list1)
             list1.append(detail['ticket_no'])
-            finals.append({"ticket_no":detail['ticket_no'],"food_items":[]})
+            finals.append({"ticket_no":detail['ticket_no'],"room_no":detail['room_no'],"total_amount":detail['total_amount'],"guest_name":detail['guest_name'],"food_items":[]})
     for final in finals:
         for detail in details:
             if detail['ticket_no'] == final['ticket_no']:
