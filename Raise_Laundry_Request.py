@@ -40,12 +40,14 @@ def Query_laundry_Request(request):
     d=request.json
     list1,finals = [],[]
     current_datetime=application_datetime().date()
-    details = json.loads(dbget("select ldry_collection.quantity,\
+    details = json.loads(dbget("select guest_profile.guest_name,ldry_collection.quantity,\
 	laundry_items.ldryitem_name,laundry_items.ldryitem_image,laundry_items.price,\
 	laundry_category.ldrycateg_name,laundry_category.ldrycateg_image,ldry_request.* from ldry_request\
 	join ldry_collection on ldry_collection.ldrycollection_id = ldry_request.ldrycollect_id\
 	join laundry_items on laundry_items.ldryitem_id = ldry_collection.ldryitem_id\
 	join laundry_category on laundry_category.ldrycateg_id = laundry_items.ldrycateg_id\
+	join guest_details on guest_details.room_no = ldry_request.room_no\
+        join guest_profile on guest_profile.mobile = guest_details.mobile_no\
 	where ldry_request.business_id='"+str(d['business_id'])+"'and\
         date(request_time) = '"+str(current_datetime)+"'"))
     
@@ -53,7 +55,7 @@ def Query_laundry_Request(request):
         if detail['ticket_no'] not in list1:
             #print(list1)
             list1.append(detail['ticket_no'])
-            finals.append({"ticket_no":detail['ticket_no'],"lan_items":[]})
+            finals.append({"ticket_no":detail['ticket_no'],"room_no":detail['room_no'],"total_amount":detail['total_amount'],"guest_name":detail['guest_name'],"lan_items":[]})
     for final in finals:
         for detail in details:
             if detail['ticket_no'] == final['ticket_no']:
