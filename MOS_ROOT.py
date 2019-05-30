@@ -182,6 +182,10 @@ def closefrontoffce():
 def selectfrontoffice():
     return Query_Front_Desk_Request(request)
 
+@app.route("/Query_Categorywise_Front_Desk_Request",methods=['POST'])
+def selectcategoryfrontdeskrequest():
+   return Query_Categorywise_Front_Desk_Request(request)
+
 @app.route("/Raise_Foodandbeverage_Request",methods=['POST'])
 def raisefooditem():
     return Raise_Foodandbeverage_Request(request)
