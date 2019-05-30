@@ -68,21 +68,6 @@ def Selectfrontdeskextraitems():
 def Selecttraveldeskitems():
     return Select_Traveldesk_Items(request)
 
-
-#--------------------select_frontdesk_category_wise_items--------------#
-
-@app.route("/Select_Travel_Desk_Items",methods=['POST'])
-def selecttraveldeskitems():
-    return Select_Travel_Desk_Items(request)
-
-@app.route("/Select_FrontDesk_Items",methods=['POST'])
-def selectfrontdeskcategoryitems():
-    return Select_FrontDesk_Items(request)
-
-@app.route("/Select_Extra_Items",methods=['POST'])
-def selectextraitems():
-    return Select_Extra_Items(request)
-
 #----------------configuration----------#
 
 @app.route("/Update_Roomtype",methods=['POST'])
