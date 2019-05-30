@@ -6,7 +6,7 @@ app = Flask(__name__) #here i set environment varible for flask framework web ap
 CORS(app)
 #-----------------------Configuration-------------------
 from Signup_Details import *
-from Frontdesk_Request import *
+from Configure_frontdesk import *
 from Raise_Front_Desk_Request import *
 from GuestDetails import *
 from HouseKeeping_Request import *
