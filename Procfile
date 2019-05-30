@@ -4,7 +4,7 @@ worker: gunicorn configure_foodandbeverage.py
 worker: gunicorn configure_hotelDepartment.py
 worker: gunicorn configure_hotelrooms.py
 worker: gunicorn Fetch_Current_Datetime.py
-worker: gunicorn Frontdesk_Request.py
+worker: gunicorn Configure_frontdesk.py
 worker: gunicorn GuestDetails.py
 worker: gunicorn hotel_contact.py
 worker: gunicorn housekeeping_configuration.py
