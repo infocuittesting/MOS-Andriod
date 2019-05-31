@@ -324,4 +324,5 @@ def unhandled_exception(e):
 	
 if __name__ == "__main__":
     #TOS.run(debug=True)
-    app.run(host ='192.168.1.21',port =5000)#run web application
+    app.run(debug=True)
+    #app.run(host ='192.168.1.21',port =5000)#run web application
