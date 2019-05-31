@@ -18,8 +18,8 @@ worker: gunicorn sqlwrapper.py
 worker: gunicorn test_File.py
 worker: gunicorn configure_laundry.py
 worker: gunicorn Raise_Laundry_Request.py
-worker:Query_all_department_categories.py+
-worker: Configure_Hotelfaq.py
+worker: gunicorn Query_all_department_categories.py
+worker: gunicorn Configure_Hotelfaq.py
 worker: gunicorn reportservicenew.py
 worker: gunicorn Query_front_desk_items.py
 worker: gunicorn Fetch_Iso_Current_Datetime.py
