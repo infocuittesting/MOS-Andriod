@@ -154,4 +154,63 @@ def room_no_report(request):
 
  #------------------------------device based report-----------------------------#
 
+def Week_Day_Report(request):
+
+    today_date = datetime.datetime.today()
+    #today_date = datetime.datetime(2019, 5, 27)
+    day = today_date.weekday()
+    print("today", today_date.weekday())
+    if day == 0:
+        start_date = today_date.date()
+        end_date = (today_date + datetime.timedelta(days=6)).date()
+    else:
+        start_date = (today_date - datetime.timedelta(days=day)).date()
+        end_date = (today_date + datetime.timedelta(days=6-day)).date()
+    #print("st:",start_date,"ed:",end_date)
+    #Days = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun']
+    fb = json.loads(dbget("select to_char(date(request_time), 'Dy') as day,count(*) from fb_requests where date(request_time) \
+                           between '"+str(start_date)+"' and '"+str(end_date)+"' group by date(request_time)"))
+
+    hk = json.loads(dbget("select to_char(date(request_time), 'Dy') as day,count(*) from hk_requests where date(request_time) \
+                               between '" +str(start_date)+ "' and '" +str(end_date)+ "' group by date(request_time)"))
+
+    ldry = json.loads(dbget("select to_char(date(request_time), 'Dy') as day,count(*) from ldry_request where date(request_time) \
+                                   between '" +str(start_date)+ "' and '" +str(end_date)+ "' group by date(request_time)"))
+
+    fd = json.loads(dbget("select to_char(date(request_time), 'Dy') as day,count(*) from fd_requests where date(request_time) \
+                                       between '" +str(start_date)+ "' and '" +str(end_date)+ "' group by date(request_time)"))
+    day_count = [{'day':'Mon','count':0},{'day':'Tue','count':0},{'day':'Wed','count':0},{'day':'Thu','count':0},
+                 {'day': 'Fri', 'count': 0},{'day':'Sat','count':0},{'day':'Sun','count':0}]
+    for d in day_count:
+        val = 0
+        try:
+          val = [f['count'] for f in fb if f['day'] == d['day'] if f['count']>val][0]
+          d['department'] = "Food And Beverage"
+        except:
+            pass
+        try:
+          val = [f['count'] for f in hk if f['day'] == d['day'] if f['count']>val][0]
+          d['department'] = "HouseKeeping"
+        except:
+            pass
+        try:
+          val = [f['count'] for f in ldry if f['day'] == d['day'] if f['count']>val][0]
+          d['department'] = "Laundry"
+        except:
+            pass
+        try:
+          val = [f['count'] for f in fd if f['day'] == d['day'] if f['count']>val][0]
+          d['department'] = "Front Desk"
+        except:
+            pass
+        d['count'] = val
+
+
+    #print('fd',day_count)
+    return (json.dumps({"Return": "Record Retrived Successfully",
+                        "ReturnCode": "RRS",
+                        "ReturnValue":day_count,
+                        "Status": "Success", "StatusCode": "200"}, indent=4))
+ 
+    
 
