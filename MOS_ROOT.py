@@ -320,6 +320,10 @@ def selectguestprofile():
 @app.route("/Update_Guest_profile",methods=['POST'])
 def updateguestprofile():
     return Update_Guest_profile(request)
+#---------------------queryfoodandbeverage_for_android------------------#
+@app.route("/Display_Food_Menu_For_Android",methods=['POST'])
+def Displayfoodmenuforandroid():
+    return Display_Food_Menu_For_Android(request)
 
 @app.errorhandler(404)
 def unhandled_exception(e):
