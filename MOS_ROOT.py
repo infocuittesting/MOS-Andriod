@@ -300,9 +300,7 @@ def Room_Report_request():
    return room_no_report(request)
 
 
-@app.route("/Week_Day_Report",methods=['POST'])
-def WeekDayReport():
-  return Week_Day_Report(request)
+
 #--------------------alexa notification------------------#
 @app.route("/Alexa_Notification",methods=['POST'])
 def notification():
