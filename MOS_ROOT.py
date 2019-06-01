@@ -298,6 +298,9 @@ def select_Hkcate():
 @app.route("/Room_report_request",methods=['POST'])
 def Room_Report_request():
    return room_no_report(request)
+@app.route("/Week_Day_Report",methods=['POST'])
+def WeekDayReport():
+  return Week_Day_Report(request)
 
 
 
