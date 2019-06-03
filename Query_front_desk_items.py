@@ -7,7 +7,7 @@ import requests
 def Select_Travel_Desk_Items(request):
     d = request.json
     output = json.loads(dbget("select fdcategory.fdcategory_id,fdcategory.fdcategory_name,fdcategory.fdcategory_image,frontdesk_items.fditem_id,\
-                               frontdesk_items.fditem_names,frontdesk_items.fditem_image,\
+                               frontdesk_items.fditem_names,frontdesk_items.fditem_image,frontdesk_items.fditem_description\
                                frontdesk_items.dept_id fdcategory,hotel_department.dept_name from frontdesk_items \
                                join  fdcategory on frontdesk_items.fdcategory_id=fdcategory.fdcategory_id \
                                join  hotel_department on frontdesk_items.dept_id=hotel_department.dept_id\
@@ -18,7 +18,7 @@ def Select_Travel_Desk_Items(request):
 def Select_FrontDesk_Items(request):
     d = request.json
     output = json.loads(dbget("select fdcategory.fdcategory_id,fdcategory.fdcategory_name,fdcategory.fdcategory_image,frontdesk_items.fditem_id,\
-                               frontdesk_items.fditem_names,frontdesk_items.fditem_image,\
+                               frontdesk_items.fditem_names,frontdesk_items.fditem_image,frontdesk_items.fditem_description\
                                frontdesk_items.dept_id fdcategory,hotel_department.dept_name from frontdesk_items \
                                join  fdcategory on frontdesk_items.fdcategory_id=fdcategory.fdcategory_id \
                                join  hotel_department on frontdesk_items.dept_id=hotel_department.dept_id\
@@ -28,7 +28,7 @@ def Select_FrontDesk_Items(request):
 def Select_Extra_Items(request):
     d = request.json
     output = json.loads(dbget("select fdcategory.fdcategory_id,fdcategory.fdcategory_name,fdcategory.fdcategory_image,frontdesk_items.fditem_id,\
-                               frontdesk_items.fditem_names,frontdesk_items.fditem_image,\
+                               frontdesk_items.fditem_names,frontdesk_items.fditem_image,frontdesk_items.fditem_description\
                                frontdesk_items.dept_id fdcategory,hotel_department.dept_name from frontdesk_items \
                                join  fdcategory on frontdesk_items.fdcategory_id=fdcategory.fdcategory_id \
                                join  hotel_department on frontdesk_items.dept_id=hotel_department.dept_id\
