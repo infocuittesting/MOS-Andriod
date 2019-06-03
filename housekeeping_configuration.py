@@ -49,7 +49,7 @@ def Update_Housekeeping_Item(request):
                 d['hkitem_image'] = data['body']['url']
     else:
         pass
-    b={k : v for k,v in d.items() if k in ('hkitem_image','hkitem_name','hkitemcateg_id')}
+    b={k : v for k,v in d.items() if k in ('hkitem_image','hkitem_name','hkitemcateg_id','hkitem_description')}
     c={ k : v for k,v in d.items() if k in('business_id','hkitem_id')}
     sql=gensql('update','housekeeping_items',b,c)
     return json.dumps({"Return": "Record Updated Successfully","ReturnCode": "RUS","Status": "Success","StatusCode": "200"},indent = 4)
