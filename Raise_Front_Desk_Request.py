@@ -52,10 +52,10 @@ def  Query_Categorywise_Front_Desk_Request(request):
         
         grouped[item['fdcategory_name']].append(item)
 
-    print(grouped)
-    for model, group in grouped.items():
+    #print(grouped)
+    #for model, group in grouped.items():
     #print
     #print model
     #pprint(group, width=150)
-       finals.append({"fdcategory_name":model,"frontdesk_items":group})
-    return json.dumps({"Return": "Record Retrived Successfully","ReturnCode": "RRS","Returnvalue":finals,"Status": "Success","StatusCode": "200"},indent = 4)
+      # finals.append({"fdcategory_name":model,"frontdesk_items":group})
+    return json.dumps({"Return": "Record Retrived Successfully","ReturnCode": "RRS","Returnvalue":grouped,"Status": "Success","StatusCode": "200"},indent = 4)
