@@ -1,6 +1,8 @@
 from sqlwrapper import *
 import re
 from Fetch_Current_Datetime import *
+import collections
+
 
 def Raise_HK_Request(request):
 
@@ -32,7 +34,7 @@ def Query_Hk_Request(request):
    current_datetime=application_datetime().date()
    print("current_datetime",current_datetime)
 
-   records = json.loads(dbget("select guest_profile.guest_name,hk_requests.ticket_no,ticket_status.*,hk_requests.room_no,\
+   details = json.loads(dbget("select guest_profile.guest_name,hk_requests.ticket_no,ticket_status.*,hk_requests.room_no,\
                                hk_requests.reminder_count,hk_requests.escalation_count,hk_requests.request_time,\
                                hk_requests.business_id,housekeeping_items.hkitem_id,housekeeping_items.hkitem_name,\
                                housekeeping_items.hkitem_image,housekeeping_items.dept_id, \
@@ -48,6 +50,14 @@ def Query_Hk_Request(request):
                                housekeeping_items.business_id='"+str(d['business_id'])+"' \
 	                       and housekeeping_category.business_id='"+str(d['business_id'])+"'\
                                and date(request_time) = '"+str(current_datetime)+"'"))
+   grouped = collections.defaultdict(list)
+   for item in details:
+      grouped[item['hkcateg_name']].append(item)
+
+    
+   return json.dumps({"Return": "Record Retrived Successfully","ReturnCode": "RRS","Returnvalue":grouped,"Status": "Success","StatusCode": "200"},indent = 4)
+
+
    
-   return json.dumps({"Return": "Record Retrived Successfully","ReturnCode": "RRS",
-                      "Returnvalue":records,"Status": "Success","StatusCode": "200"},indent = 4)    
+
+
