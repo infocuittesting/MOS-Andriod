@@ -58,7 +58,7 @@ def Select_Foodandbeverage_Items(request):
     d = request.json
     rooms = json.loads(dbget("select f.item_name,f.business_id,f.dept_id,f.item_description,f.price,f.foodtype_id,f.todayspecial_id,\
     f.fbitem_id,f.foodcategory_id,f.item_createdon,o.foodcateg_name,o.foodcateg_image,\
-    h.dept_name,h.dept_image,t.foodtype_name,s.special from foodandbeverage_items f \
+    h.dept_name,t.foodtype_name,s.special from foodandbeverage_items f \
     join food_category o on f.foodcategory_id = o.foodcateg_id\
     join hotel_department h on f.dept_id = h.dept_id\
     join foodtype t on f.foodtype_id = t.foodtype_id\
