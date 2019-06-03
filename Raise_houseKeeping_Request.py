@@ -52,7 +52,7 @@ def Query_Hk_Request(request):
                                and date(request_time) = '"+str(current_datetime)+"'"))
    grouped = collections.defaultdict(list)
    for item in details:
-      grouped[item['hkcateg_name']].append(item)
+      grouped[item['hkcateg_name'].replace(" ","_")].append(item)
 
     
    return json.dumps({"Return": "Record Retrived Successfully","ReturnCode": "RRS","Returnvalue":grouped,"Status": "Success","StatusCode": "200"},indent = 4)
