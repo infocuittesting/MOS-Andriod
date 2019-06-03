@@ -50,7 +50,7 @@ def  Query_Categorywise_Front_Desk_Request(request):
     grouped = collections.defaultdict(list)
     for item in details:
         
-        grouped[item['fdcategory_name']].append(item)
+        grouped[item['fdcategory_name'].replace(" ","_")].append(item)
 
     #print(grouped)
     #for model, group in grouped.items():
