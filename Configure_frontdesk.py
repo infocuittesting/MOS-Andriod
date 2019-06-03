@@ -40,7 +40,7 @@ def Update_Front_Desk_Items(request):
     d = request.json
     d['fditem_names']=d['fditem_names'].title()
    
-    s={k:v for k,v in d.items() if v != "" if k in ('fditem_names','fditem_image','fdcategory_id')}
+    s={k:v for k,v in d.items() if v != "" if k in ('fditem_names','fditem_image','fdcategory_id','fditem_description')}
     
     z={k:v for k,v in d.items() if v != "" if k in ('fditem_id','business_id')}
     
@@ -61,7 +61,7 @@ def Update_Front_Desk_Items(request):
 def Select_Front_Desk_Items(request):
     d = request.json
     output = json.loads(dbget("select fdcategory.fdcategory_id,fdcategory.fdcategory_name,fdcategory.fdcategory_image,frontdesk_items.fditem_id,\
-                               frontdesk_items.fditem_names,frontdesk_items.fditem_image,\
+                               frontdesk_items.fditem_names,frontdesk_items.fditem_image,frontdesk_items.fditem_description,\
                                frontdesk_items.dept_id fdcategory,hotel_department.dept_name from frontdesk_items \
                                join  fdcategory on frontdesk_items.fdcategory_id=fdcategory.fdcategory_id \
                                join  hotel_department on frontdesk_items.dept_id=hotel_department.dept_id\
