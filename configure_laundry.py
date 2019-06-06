@@ -44,31 +44,42 @@ def Configure_Laundry_Items(request):
 
 
 def Select_Laundry_Items(request):
-    d = request.json
-    finals,list1=[],[]
-    lau_items = json.loads(dbget("select laundry_category.ldrycateg_name,laundry_category.ldrycateg_image,laundry_items.* \
-                                from laundry_items\
-                                join laundry_category on laundry_category.ldrycateg_id = laundry_items.ldrycateg_id\
-                                where laundry_items.business_id='"+d['business_id']+"'"))
-    lau_question = json.loads(dbget("select * from laundry_faqs where business_id='"+d['business_id']+"'"))
-    #category = [items['ldrycateg_name'] for items in lau_items]
-    #print(list(set(category)))
-    for ldry in lau_items:
-        
-        ldry['faqs']=[lau_qu for lau_qu in lau_question if ldry['ldryitem_id']==lau_qu['ldryitem_id']]
-    grouped = collections.defaultdict(list)
-    for item in lau_items:
-        grouped[item['ldrycateg_name']].append(item)
+   d = request.json
+   finals,list1=[],[]
+   lau_items = json.loads(dbget("select laundry_category.ldrycateg_name,laundry_category.ldrycateg_image,laundry_items.* \
+                               from laundry_items\
+                               join laundry_category on laundry_category.ldrycateg_id = laundry_items.ldrycateg_id\
+                               where laundry_items.business_id='"+d['business_id']+"'"))
+   lau_question = json.loads(dbget("select * from laundry_faqs where business_id='"+d['business_id']+"'"))
+   #category = [items['ldrycateg_name'] for items in lau_items]
+   #print(list(set(category)))
+   for ldry in lau_items:
 
-    print(grouped)
-    for model, group in grouped.items():
-    #print
-    #print model
-    #pprint(group, width=150)
-       finals.append({"ldrycateg_name":model,"laundry_items":group})
-    
-    return json.dumps({"Return": "Record Retrived Successfully","ReturnCode": "RRS","ReturnValue":finals,"Status": "Success","StatusCode": "200"},indent = 4)
+       ldry['faqs']=[lau_qu for lau_qu in lau_question if ldry['ldryitem_id']==lau_qu['ldryitem_id']]
+   grouped = collections.defaultdict(list)
+   for item in lau_items:
+       grouped[item['ldrycateg_name']].append(item)
 
+   #print(grouped)
+   for model, group in grouped.items():
+   #print
+   #print model
+   #pprint(group, width=150)
+      finals.append({"ldrycateg_name":model,"laundry_items":group})
+
+   count = 0
+   for item in finals:
+
+       count += 1
+       item.update({'count':count,'category_image':''})
+       print(count)
+
+   for ldry  in lau_items:
+       for final in finals:
+           if ldry['ldrycateg_name'] == final['ldrycateg_name']:
+                final['category_image']=ldry['ldrycateg_image']
+
+   return json.dumps({"Return": "Record Retrived Successfully","ReturnCode": "RRS","ReturnValue":finals,"Status": "Success","StatusCode": "200"},indent = 4)
 
 def Update_Laundry_Items(request):
     d = request.json
