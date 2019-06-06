@@ -67,7 +67,8 @@ def Checkout_Guest(request):
 def Query_Guest_Details(request):
     d = request.json
     print(d)
-    gus_details = json.loads(dbget("select * from guest_details where business_id='"+str(d['business_id'])+"'\
+    gus_details = json.loads(dbget("select guest_profile.guest_name,Guest_details.* from guest_details\
+                                    join guest_profile on guest_profile.mobile = guest_details.mobile_no where guest_details.business_id='"+str(d['business_id'])+"'\
                                     order by checkin_date "))
     
     return json.dumps({"Return": "Record Retrived Successfully","ReturnCode": "RRS",
