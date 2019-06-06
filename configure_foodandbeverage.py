@@ -2,6 +2,8 @@ from sqlwrapper import *
 import random
 from Fetch_Current_Datetime import *
 import requests
+from collections import Counter
+
 def Foodandbeverage_Items(request):
     d = request.json
     d.update({'dept_id':'foo2106'})
