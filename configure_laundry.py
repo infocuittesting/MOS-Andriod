@@ -67,7 +67,7 @@ def Select_Laundry_Items(request):
    #pprint(group, width=150)
       finals.append({"ldrycateg_name":model,"laundry_items":group})
 
-   count = 0
+   count = -1
    for item in finals:
 
        count += 1
