@@ -70,7 +70,7 @@ def Select_Laundry_Items(request):
    count = 0
    for item in finals:
 
-       count += 1
+       count += 0
        item.update({'count':str(count),'category_image':''})
        print(count)
 
