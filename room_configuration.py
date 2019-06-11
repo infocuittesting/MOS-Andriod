@@ -37,7 +37,7 @@ def Update_Roomtype(request):
     else:
         pass
    
-    b={k : v for k,v in d.items() if k in ('roomtype_image')}
+    b={k : v for k,v in d.items() if k in ('roomtype_image','roomtype_name')}
     c={ k : v for k,v in d.items() if k in('business_id','roomtype_id')}
     sql=gensql('update','room_type',b,c)
     return json.dumps({"Return": "Record Updated Successfully","ReturnCode": "RUS","Status": "Success","StatusCode": "200"},indent = 4)
