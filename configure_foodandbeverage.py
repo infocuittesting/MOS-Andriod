@@ -29,9 +29,14 @@ def Foodandbeverage_Items(request):
                 d['foodcateg_image'] = data['body']['url']
             else:
                 pass
+            fdname=json.loads(dbget("select foodcateg_name from food_category where foodcateg_id= '"+str(d['foodcateg_id'])+"'\
+                              and business_id ='"+str(d['business_id'])+"'"))
+            print(fdname,'foodcategory_name')
+            fdrename=fdname[0]['foodcateg_name']
+            print(fdrename)
             #insert food category
-            s={"foodcateg_id":(d['foodcateg_name'][:3]+str(random.randint(1000,3000))).lower(),
-               "foodcateg_name":d['foodcateg_name'].title(),
+            s={"foodcateg_id":(fdrename[:3]+str(random.randint(1000,3000))).lower(),
+               "foodcateg_name":fdrename.title(),
                "foodcateg_image":d['foodcateg_image'],
                "business_id":d['business_id']}
             s = {k:v for k,v in s.items() if v!= ""}
@@ -41,13 +46,15 @@ def Foodandbeverage_Items(request):
        
         
             d.update({'fbitem_id': (d['item_name'][:3]+str(random.randint(1000,3000))).lower(),"foodcategory_id":s['foodcateg_id'],"item_name":d['item_name'].title(),"item_createdon":str(application_datetime())})
-            d = {k:v for k,v in d.items() if v!= "" if k not in ('foodcateg_name','foodcateg_image','branch_name')}
+            d = {k:v for k,v in d.items() if v!= "" if k not in ('foodcateg_name','foodcateg_image','branch_name','foodcateg_id')}
+            print(d,'foodcategory_id')
             insert_item = gensql('insert','foodandbeverage_items',d)
             print("if_insert item:",insert_item)
         else:
             print("ssssssssssssssssssssssssssssssss")
             d.update({'fbitem_id': (d['item_name'][:3]+str(random.randint(1000,3000))).lower(),"foodcategory_id":str(d['foodcateg_id']),"item_name":d['item_name'].title(),"item_createdon":str(application_datetime())})
             d = {k:v for k,v in d.items() if v!= "" if k not in ('foodcateg_name','foodcateg_image','foodcateg_id','branch_name')}
+            print()
             insert_item = gensql('insert','foodandbeverage_items',d)
         print("else_insert item:",insert_item)
     #return json.dumps({"Retun":d},indent=4)
