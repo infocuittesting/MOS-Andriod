@@ -10,8 +10,6 @@ def Foodandbeverage_Items(request):
     check_item = json.loads(dbget("select count(*) from foodandbeverage_items \
                                      where business_id='"+str(d['business_id'])+"' and item_name= '"+str(d['item_name'].title())+"'"))
     if check_item[0]['count'] == 0:
-        get_category = json.loads(dbget("select count(*) from food_category \
-                                     where business_id='"+str(d['business_id'])+"' and foodcateg_name = '"+str(d['foodcateg_name'].title())+"'"))
         #upload item image
         if len(d['item_image']) != 0:
                 r = requests.post("https://k746kt3782.execute-api.us-east-1.amazonaws.com/mos-android_imageupload",json={"base64":d['item_image'],"branch_name":d['branch_name']})
@@ -20,34 +18,40 @@ def Foodandbeverage_Items(request):
         else:
             pass
         #insert food category
-    
-        if get_category[0]['count'] == 0:
-            #upload image for food category
-            if len(d['foodcateg_image']) != 0:
-                r = requests.post("https://k746kt3782.execute-api.us-east-1.amazonaws.com/mos-android_imageupload",json={"base64":d['foodcateg_image'],"branch_name":d['branch_name']})
-                data = r.json()
-                d['foodcateg_image'] = data['body']['url']
-            else:
-                pass
-            #insert food category
-            s={"foodcateg_id":(d['foodcateg_name'][:3]+str(random.randint(1000,3000))).lower(),
-               "foodcateg_name":d['foodcateg_name'].title(),
-               "foodcateg_image":d['foodcateg_image'],
-               "business_id":d['business_id']}
-            s = {k:v for k,v in s.items() if v!= ""}
-            catogory = gensql('insert','food_category',s)
-            print("if_catogory",catogory)
+        if d['foodcateg_name']!= "":
+            get_category = json.loads(dbget("select count(*) from food_category \
+                                         where business_id='"+str(d['business_id'])+"' and foodcateg_name = '"+str(d['foodcateg_name'].title())+"'"))
+            
+            if get_category[0]['count']== 0:
+                #upload image for food category
+                if len(d['foodcateg_image']) != 0:
+                    r = requests.post("https://k746kt3782.execute-api.us-east-1.amazonaws.com/mos-android_imageupload",json={"base64":d['foodcateg_image'],"branch_name":d['branch_name']})
+                    data = r.json()
+                    d['foodcateg_image'] = data['body']['url']
+                else:
+                    pass
+                
+                #insert food category
+                s={"foodcateg_id":(d['foodcateg_name'][:3]+str(random.randint(1000,3000))).lower(),
+                   "foodcateg_name":d['foodcateg_name'].title(),
+                   "foodcateg_image":d['foodcateg_image'],
+                   "business_id":d['business_id']}
+                s = {k:v for k,v in s.items() if v!= ""}
+                catogory = gensql('insert','food_category',s)
+                print("if_catogory",catogory)
 
-       
-        
-            d.update({'fbitem_id': (d['item_name'][:3]+str(random.randint(1000,3000))).lower(),"foodcategory_id":s['foodcateg_id'],"item_name":d['item_name'].title(),"item_createdon":str(application_datetime())})
-            d = {k:v for k,v in d.items() if v!= "" if k not in ('foodcateg_name','foodcateg_image','branch_name')}
-            insert_item = gensql('insert','foodandbeverage_items',d)
-            print("if_insert item:",insert_item)
+           
+            
+                d.update({'fbitem_id': (d['item_name'][:3]+str(random.randint(1000,3000))).lower(),"foodcategory_id":s['foodcateg_id'],"item_name":d['item_name'].title(),"item_createdon":str(application_datetime())})
+                d = {k:v for k,v in d.items() if v!= "" if k not in ('foodcateg_name','foodcateg_image','branch_name','foodcateg_id')}
+                print(d,'foodcategory_id')
+                insert_item = gensql('insert','foodandbeverage_items',d)
+                print("if_insert item:",insert_item)
         else:
             print("ssssssssssssssssssssssssssssssss")
             d.update({'fbitem_id': (d['item_name'][:3]+str(random.randint(1000,3000))).lower(),"foodcategory_id":str(d['foodcateg_id']),"item_name":d['item_name'].title(),"item_createdon":str(application_datetime())})
             d = {k:v for k,v in d.items() if v!= "" if k not in ('foodcateg_name','foodcateg_image','foodcateg_id','branch_name')}
+            print()
             insert_item = gensql('insert','foodandbeverage_items',d)
         print("else_insert item:",insert_item)
     #return json.dumps({"Retun":d},indent=4)
@@ -116,7 +120,7 @@ def Display_Food_Menu_For_Android(request):
              if food_menu['foodcateg_name'] ==food_menu_detail['categry_name']:
                 food_menu['item_images'] = [{"item_image":food_menu['item_image']}]
                 food_menu_detail["items"].append(food_menu)
-    get_best_sellers= json.loads(dbget("select str(count(*),\
+    get_best_sellers= json.loads(dbget("select count(*),\
                                        foodandbeverage_items.fbitem_id,foodandbeverage_items.item_name,\
                                        foodandbeverage_items.item_image,foodandbeverage_items.price,foodandbeverage_items.foodtype_id,\
                                        foodandbeverage_items.todayspecial_id,foodandbeverage_items.business_id,\
