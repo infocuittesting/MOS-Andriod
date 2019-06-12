@@ -3,6 +3,8 @@ import re
 from Fetch_Current_Datetime import *
 def Raise_Foodandbeverage_Request(request):
     d=request.json
+    d['fbitem_count']=len(d['food_items'])
+    d['total_amount']=(sum(i['quantity']*i['price']for i in d['food_items']))
     list1 = []
     order_no = json.loads(dbget("SELECT array_to_string(ARRAY(SELECT chr((48 + round(random() * 9)) :: integer) \
                                 FROM generate_series(1,10)), '');"))
