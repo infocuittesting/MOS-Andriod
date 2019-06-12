@@ -18,7 +18,11 @@ def Configure_Laundry_Items(request):
         print("dddddddddddddddddddddd",values)
         dbput("INSERT INTO  laundry_faqs (ldryitem_id, faqquestion, faqanswer,business_id)VALUES {}".format(values))
       
-    if get_category[0]['count'] == 0:
+    if d['ldrycateg_name'] != "":
+        get_category = json.loads(dbget("select count(*) from laundry_category \
+                                     where business_id='"+str(d['business_id'])+"' and ldrycateg_name = '"+str(d['ldrycateg_name'].title())+"'"))
+        print(get_category)
+
         s={"ldrycateg_id":(d['ldrycateg_name'][:3]+str(random.randint(1000,3000))).lower(),
            "ldrycateg_name":d['ldrycateg_name'].title(),
            "ldrycateg_image":d['ldrycateg_image'],
