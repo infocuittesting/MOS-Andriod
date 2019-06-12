@@ -5,6 +5,8 @@ from Fetch_Current_Datetime import *
 def Raise_Laundry_Request(request):
     d=request.json
     list1 = []
+    d['ldryitem_count']=len(d['lan_items'])
+    d['total_amount']=(sum(i['quantity']*i['price']for i in d['lan_items'])) 	
     order_no = json.loads(dbget("SELECT array_to_string(ARRAY(SELECT chr((48 + round(random() * 9)) :: integer) \
                                 FROM generate_series(1,10)), '');"))
     print(order_no)
