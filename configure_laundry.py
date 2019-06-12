@@ -50,12 +50,12 @@ def Select_Laundry_Items(request):
                                from laundry_items\
                                join laundry_category on laundry_category.ldrycateg_id = laundry_items.ldrycateg_id\
                                where laundry_items.business_id='"+d['business_id']+"'"))
-   lau_question = json.loads(dbget("select * from laundry_faqs where business_id='"+d['business_id']+"'"))
+   #lau_question = json.loads(dbget("select * from laundry_faqs where business_id='"+d['business_id']+"'"))
    #category = [items['ldrycateg_name'] for items in lau_items]
    #print(list(set(category)))
-   for ldry in lau_items:
+   #for ldry in lau_items:
 
-       ldry['faqs']=[lau_qu for lau_qu in lau_question if ldry['ldryitem_id']==lau_qu['ldryitem_id']]
+       #ldry['faqs']=[lau_qu for lau_qu in lau_question if ldry['ldryitem_id']==lau_qu['ldryitem_id']]
    grouped = collections.defaultdict(list)
    for item in lau_items:
        grouped[item['ldrycateg_name']].append(item)
