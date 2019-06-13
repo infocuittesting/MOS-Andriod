@@ -76,8 +76,8 @@ def Select_Foodandbeverage_Items(request):
 
 def Update_Foodandbeverage_Items(request):
     d = request.json
-    d.update({'foodcateg_name':d['foodcateg_name'].title(),"item_name":d['item_name'].title()})
-    print(d)
+    #d.update({'foodcateg_name':d['foodcateg_name'].title(),"item_name":d['item_name'].title()})
+    #print(d)
     if len(d['foodcateg_image']) != 0:
                 r = requests.post("https://k746kt3782.execute-api.us-east-1.amazonaws.com/mos-android_imageupload",json={"base64":d['foodcateg_image'],"branch_name":d['branch_name']})
                 data = r.json()
