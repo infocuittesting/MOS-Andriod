@@ -7,45 +7,52 @@ def Configure_Laundry_Items(request):
     list1 = [] 
     d["dept_id"]="lau1997"
     d['ldryitem_id']=d['ldryitem_name'][:3]+str(random.randint(1000,3000)).lower()
-    get_category = json.loads(dbget("select count(*) from laundry_category \
-                                     where business_id='"+str(d['business_id'])+"' and ldrycateg_name = '"+str(d['ldrycateg_name'].title())+"'"))
-    print(get_category)
-    
-    if len(d["faqs"]) !=0:
-        for item in d['faqs']:
-            list1.append(tuple((d['ldryitem_id'],item['faqquestion'].replace("'",'"'),item['faqanswer'].replace("'",'"'),d['business_id'])))
-        values = ', '.join(map(str, list1))
-        print("dddddddddddddddddddddd",values)
-        dbput("INSERT INTO  laundry_faqs (ldryitem_id, faqquestion, faqanswer,business_id)VALUES {}".format(values))
-      
-    if d['ldrycateg_name'] != "":
-        get_category = json.loads(dbget("select count(*) from laundry_category \
-                                     where business_id='"+str(d['business_id'])+"' and ldrycateg_name = '"+str(d['ldrycateg_name'].title())+"'"))
-        print(get_category)
+    check_item = json.loads(dbget("select count(*) from laundry_items \
+                                     where business_id='"+str(d['business_id'])+"' and ldryitem_name= '"+str(d['ldryitem_name'].title())+"'"))
+    if check_item[0]['count'] == 0:
 
-        s={"ldrycateg_id":(d['ldrycateg_name'][:3]+str(random.randint(1000,3000))).lower(),
-           "ldrycateg_name":d['ldrycateg_name'].title(),
-           "ldrycateg_image":d['ldrycateg_image'],
-           "business_id":d['business_id']}
-        s = {k:v for k,v in s.items() if v!= ""}
-        catogory = gensql('insert','laundry_category',s)
-        #print("if_catogory",catogory)
-        
-        d.update({"ldrycateg_id":str(s['ldrycateg_id']),"ldryitem_name":d['ldryitem_name'].title()})
-        d = {k:v for k,v in d.items() if v!= "" if k not in ('ldrycateg_name','ldrycateg_image','faqs','branch_name')}
-        insert_item = gensql('insert','laundry_items',d)
-        #print("if_insert item:",insert_item)
+    
+       # if len(d["faqs"]) !=0:
+          #  for item in d['faqs']:
+             #   list1.append(tuple((d['ldryitem_id'],item['faqquestion'].replace("'",'"'),item['faqanswer'].replace("'",'"'),d['business_id'])))
+            #values = ', '.join(map(str, list1))
+            #print("dddddddddddddddddddddd",values)
+            #dbput("INSERT INTO  laundry_faqs (ldryitem_id, faqquestion, faqanswer,business_id)VALUES {}".format(values))
+          
+        if d['ldrycateg_name'] != "":
+            get_category = json.loads(dbget("select count(*) from laundry_category \
+                                         where business_id='"+str(d['business_id'])+"' and ldrycateg_name = '"+str(d['ldrycateg_name'].title())+"'"))
+            print(get_category)
+            if get_category[0]['count'] ==0 :
+
+                s={"ldrycateg_id":(d['ldrycateg_name'][:3]+str(random.randint(1000,3000))).lower(),
+                   "ldrycateg_name":d['ldrycateg_name'].title(),
+                   "ldrycateg_image":d['ldrycateg_image'],
+                   "business_id":d['business_id']}
+                s = {k:v for k,v in s.items() if v!= ""}
+                catogory = gensql('insert','laundry_category',s)
+                #print("if_catogory",catogory)
+                
+                d.update({"ldrycateg_id":str(s['ldrycateg_id']),"ldryitem_name":d['ldryitem_name'].title()})
+                d = {k:v for k,v in d.items() if v!= "" if k not in ('ldrycateg_name','ldrycateg_image','faqs','branch_name')}
+                insert_item = gensql('insert','laundry_items',d)
+            else:
+                return json.dumps({"Return": "Category Already Inserted ","ReturnCode": "CAI","Status": "Success","StatusCode": "200"},indent = 4)
+            
+                
+                #print("if_insert item:",insert_item)
+        else:
+            print("ssssssssssssssssssssssssssssssss")
+            d.update({"ldrycateg_id":str(d['ldrycateg_id']),"ldryitem_name":d['ldryitem_name'].title()})
+            d = {k:v for k,v in d.items() if v!= "" if k not in ('ldrycateg_name','ldrycateg_image','faqs','branch_name')}
+            insert_item = gensql('insert','laundry_items',d)
+                #print("else_insert item:",insert_item)
+            
+        #return json.dumps({"Retun":d},indent=4)
+
+        return json.dumps({"Return": "Record Inserted Successfully","ReturnCode": "RIS","Status": "Success","StatusCode": "200"},indent = 4)
     else:
-        print("ssssssssssssssssssssssssssssssss")
-        d.update({"ldrycateg_id":str(d['ldrycateg_id']),"ldryitem_name":d['ldryitem_name'].title()})
-        d = {k:v for k,v in d.items() if v!= "" if k not in ('ldrycateg_name','ldrycateg_image','faqs','branch_name')}
-        insert_item = gensql('insert','laundry_items',d)
-        #print("else_insert item:",insert_item)
-    
-    #return json.dumps({"Retun":d},indent=4)
-
-    return json.dumps({"Return": "Record Inserted Successfully","ReturnCode": "RIS","Status": "Success","StatusCode": "200"},indent = 4)
-
+        return json.dumps({"Return": "Record Already Inserted ","ReturnCode": "RAI","Status": "Success","StatusCode": "200"},indent = 4)
 
 def Select_Laundry_Items(request):
    d = request.json
