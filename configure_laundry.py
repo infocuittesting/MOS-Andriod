@@ -95,13 +95,13 @@ def Select_Laundry_Items(request):
 def Update_Laundry_Items(request):
     d = request.json
     d.update({'ldrycateg_name':d['ldrycateg_name'].title(),"ldryitem_name":d['ldryitem_name'].title()})
-    print(d) 
+     
 
     b={k : v for k,v in d.items() if k in ('ldrycateg_name','ldrycateg_image')}
     c={ k : v for k,v in d.items() if k in('ldrycateg_id','business_id')}
     sql=gensql('update','laundry_category',b,c)
     
-    b={k : v for k,v in d.items() if k in ('ldryitem_name','ldrycateg_id','ldryitem_description','price')}
+    b={k : v for k,v in d.items() if k in ('ldryitem_name','ldrycateg_id','ldryitem_description','ldryitem_image','price')}
     c={ k : v for k,v in d.items() if k in('ldryitem_id','business_id')}
     sql=gensql('update','laundry_items',b,c)
     return json.dumps({"Return": "Record Updated Successfully","ReturnCode": "RUS","Status": "Success","StatusCode": "200"},indent = 4)
