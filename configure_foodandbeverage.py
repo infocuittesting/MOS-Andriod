@@ -86,7 +86,7 @@ def Update_Foodandbeverage_Items(request):
     else:
         pass
 
-    b={k : v for k,v in d.items() if v !='' if k in ('foodcateg_image')}
+    b={k : v for k,v in d.items()  if k in ('foodcateg_image')}
     c={ k : v for k,v in d.items() if k in('foodcateg_id','business_id')}
     sql=gensql('update','food_category',b,c)
 
@@ -98,7 +98,7 @@ def Update_Foodandbeverage_Items(request):
     else:
         pass
     
-    b={k : v for k,v in d.items() if v !='' if k in ('item_name','foodcategory_id','item_description','price','foodtype_id','todayspecial_id','item_image')}
+    b={k : v for k,v in d.items()  if k in ('item_name','foodcategory_id','item_description','price','foodtype_id','todayspecial_id','item_image')}
     c={ k : v for k,v in d.items() if k in('fbitem_id','business_id')}
     sql=gensql('update','foodandbeverage_items',b,c)
     return json.dumps({"Return": "Record Updated Successfully","ReturnCode": "RUS","Status": "Success","StatusCode": "200"},indent = 4)             
