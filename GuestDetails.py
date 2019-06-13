@@ -84,8 +84,8 @@ def Query_Billing_Details(request):
     print(total_amount_laundry)
     total_amt_food = sum( fd['total_amount'] for fd in food)
     print(total_amt_food)
-    d1 = datetime.strptime(guest[0]['checkin_date'], "%Y-%m-%d")
-    d2 = datetime.strptime(guest[0]['checkout_date'], "%Y-%m-%d")
+    d1 = datetime.datetime.strptime(guest[0]['checkin_date'], "%Y-%m-%d")
+    d2 = datetime.datetime.strptime(guest[0]['checkout_date'], "%Y-%m-%d")
     total_days = abs((d2 - d1).days)
     print(total_days)
     total_price= total_days * guest[0]['price']
