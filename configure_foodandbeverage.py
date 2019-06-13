@@ -76,8 +76,8 @@ def Select_Foodandbeverage_Items(request):
 
 def Update_Foodandbeverage_Items(request):
     d = request.json
-    #d.update({'foodcateg_name':d['foodcateg_name'].title(),"item_name":d['item_name'].title()})
-    #print(d)
+    d.update({'foodcateg_name':d['foodcateg_name'].title(),"item_name":d['item_name'].title()})
+    print(d)
     if len(d['foodcateg_image']) != 0:
                 r = requests.post("https://k746kt3782.execute-api.us-east-1.amazonaws.com/mos-android_imageupload",json={"base64":d['foodcateg_image'],"branch_name":d['branch_name']})
                 data = r.json()
@@ -86,7 +86,7 @@ def Update_Foodandbeverage_Items(request):
     else:
         pass
 
-    b={k : v for k,v in d.items() if k in ('foodcateg_name','foodcateg_image')}
+    b={k : v for k,v in d.items() if v !='' if k in ('foodcateg_name','foodcateg_image')}
     c={ k : v for k,v in d.items() if k in('foodcateg_id','business_id')}
     sql=gensql('update','food_category',b,c)
 
@@ -98,10 +98,10 @@ def Update_Foodandbeverage_Items(request):
     else:
         pass
     
-    b={k : v for k,v in d.items() if k in ('item_name','foodcategory_id','item_description','price','foodtype_id','todayspecial_id','item_image')}
+    b={k : v for k,v in d.items() if v !='' if k in ('item_name','foodcategory_id','item_description','price','foodtype_id','todayspecial_id','item_image')}
     c={ k : v for k,v in d.items() if k in('fbitem_id','business_id')}
     sql=gensql('update','foodandbeverage_items',b,c)
-    return json.dumps({"Return": "Record Updated Successfully","ReturnCode": "RUS","Status": "Success","StatusCode": "200"},indent = 4)       
+    return json.dumps({"Return": "Record Updated Successfully","ReturnCode": "RUS","Status": "Success","StatusCode": "200"},indent = 4)          
 def Display_Food_Menu_For_Android(request):
     d = request.json
     food_details,food_menu_details = [],[]
