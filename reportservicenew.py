@@ -212,7 +212,8 @@ def Week_Day_Report(request):
                         "ReturnValue":day_count,
                         "Status": "Success", "StatusCode": "200"}, indent=4))
 #-------------------------------roombased report------------------------------#
-d= request.json
+def roombasedreport(request):
+    d= request.json
 
     hkrequest = json.loads(dbget("select CAST(room_no AS varchar(10)) , count(*) from hk_requests \
       where date(request_time) between '"+d['datefrom']+"' and '"+d['dateto']+"' and business_id ='"+d['business_id']+"' group by room_no"))
@@ -262,6 +263,5 @@ d= request.json
                         "Room_based_report":finals,
                         "Room_details":final_request1,
                         "Status": "Success","StatusCode": "200"},indent=4))
- 
     
 
