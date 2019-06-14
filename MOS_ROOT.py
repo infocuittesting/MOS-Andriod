@@ -301,6 +301,9 @@ def Room_Report_request():
 @app.route("/Week_Day_Report",methods=['POST'])
 def WeekDayReport():
   return Week_Day_Report(request)
+@app.route("/Room_based_report",methods=['POST'])
+def Roombased():
+  return roombasedreport(request)
 
 
 
