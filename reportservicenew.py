@@ -211,6 +211,56 @@ def Week_Day_Report(request):
                         "ReturnCode": "RRS",
                         "ReturnValue":day_count,
                         "Status": "Success", "StatusCode": "200"}, indent=4))
+#-------------------------------roombased report------------------------------#
+def roombasedreport(request):
+    d= request.json
+
+    hkrequest = json.loads(dbget("select room_no, count(*) from hk_requests \
+      where date(request_time) between '"+d['datefrom']+"' and '"+d['dateto']+"' and business_id ='"+d['business_id']+"' group by room_no"))
+    
+    
+    fdrequest = json.loads(dbget("select room_no, count(*) from  fd_requests  \
+	 where date(request_time) between '"+d['datefrom']+"' and '"+d['dateto']+"' and business_id ='"+d['business_id']+"' group by room_no"))
+
+   
+    fbrequest = json.loads(dbget("select room_no, count(*) from fb_requests \
+	  where date(request_time) between '"+d['datefrom']+"' and '"+d['dateto']+"' and business_id ='"+d['business_id']+"' group by room_no"))
+
+    laundry_request = json.loads(dbget("select room_no,count(*) from ldry_request where date(request_time)\
+                                         between '"+d['datefrom']+"' and '"+d['dateto']+"' and business_id= '"+d['business_id']+"' group by room_no"))
+    
+    final_request=hkrequest+fdrequest+fbrequest+laundry_request
+    c = defaultdict(int)
+    for s in final_request:
+                        c[s['room_no']] += s['count']
+    finals = [{'room_no': k ,'Count': v} for k,v in c.items()]
+    print("mohannnnnnnnnnnnnnnnnnnnnnnnnnnnn")
+
+
+    hkrequest1 = json.loads(dbget("select * from hk_requests \
+      where date(request_time) between '"+d['datefrom']+"' and '"+d['dateto']+"' and business_id ='"+d['business_id']+"' "))
+    print(hkrequest1)
+    hkrequest2 = [hk.update({'Department':'House Keeping'}) for hk in hkrequest1]
+    
+    fdrequest1 = json.loads(dbget("select * from  fd_requests  \
+	 where date(request_time) between '"+d['datefrom']+"' and '"+d['dateto']+"' and business_id ='"+d['business_id']+"' "))
+    fdrequest2 = [hk.update({'Department':'Front Desk'})  for hk in fdrequest1]
+   
+    fbrequest1 = json.loads(dbget("select * from fb_requests \
+	  where date(request_time) between '"+d['datefrom']+"' and '"+d['dateto']+"' and business_id ='"+d['business_id']+"' "))
+    fbrequest2 = [hk.update({'Department':'Food And Beverage'})for hk in fbrequest1]
+
+    laundry_request1= json.loads(dbget("select * from ldry_request where date(request_time)\
+                                         between '"+d['datefrom']+"' and '"+d['dateto']+"' and business_id= '"+d['business_id']+"' "))
+    
+    laundry_request2 = [hk.update({'Department':'Laundry'})for hk in laundry_request1]
+    
+    final_request1=hkrequest1+fdrequest1+fbrequest1+laundry_request1
+    return (json.dumps({"Return": "Record Retrived Successfully",
+                        "ReturnCode": "RRS",
+                        "Room_based_report":finals,
+                        "Room_details":final_request1,
+                        "Status": "Success","StatusCode": "200"},indent=4))
  
     
 
