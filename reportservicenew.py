@@ -263,5 +263,80 @@ def roombasedreport(request):
                         "Room_based_report":finals,
                         "Room_details":final_request1,
                         "Status": "Success","StatusCode": "200"},indent=4))
+#--------------------------------------------departmentbased_report------------------------------#
+import datetime
+
+def complete_count(hkre,st,n):
+    y = 0
+    #for x in hkre:
+    #    print(x,st,n)
+    #    if x['date'] == str(st) and x['ticketstatus_id'] == n:
+    #        y = x['count']
+    #        break
+    y = list(filter(lambda x: x['date'] == str(st) and  x['ticketstatus_id'] == n, hkre))
+    if len(y) == 0:
+        return 0
+    else:
+        return (y[0]['count']) 
+
+    
+def departmentbasedreport(request):
+    d=request.json
+    hkrequest3=json.loads(dbget("select date(request_time),ticketstatus_id ,count(*) from "+d['department']+" where\
+                             request_time between '"+d['datefrom']+"' and '"+d['dateto']+"' and business_id= '"+d['business_id']+"'\
+                                 group by ticketstatus_id, date(request_time) order by date"))
+    print(hkrequest3)
+    st_date = datetime.datetime.strptime(d['datefrom'], '%Y-%m-%d').date()
+    ed_date = datetime.datetime.strptime(d['dateto'], '%Y-%m-%d').date()
+    dep_count_report = []
+    #complete_count = filter(lambda x: x.ticketstatus_id == 2,  hkrequest3)
+    #pending_count = filter(lambda x: x.ticketstatus_id == 1,  hkrequest3)
+    while st_date <= ed_date:
+        print(st_date)
+        dep_count_report.append({'date':str(st_date),
+                                'Completed': complete_count(hkrequest3,st_date,n=2),
+                                'Pending': complete_count(hkrequest3,st_date,n=1)
+                                })
+        
+        st_date+=datetime.timedelta(days=1)
+    #print(dep_count_report)
+    remainder_count=json.loads(dbget("select reminder_count, escalation_count from "+d['department']+" where \
+                                     date(request_time) between '"+d['datefrom']+"' and '"+d['dateto']+"' "))
+
+    r1, r2, e1, e2 = 0,0,0,0
+    for x in remainder_count:
+        if x['reminder_count'] == 1:
+            r1+=1
+        elif x['reminder_count'] == 2:
+            r2+=1
+        if x['escalation_count'] == 1:
+            e1+=1
+        elif x['escalation_count'] == 2:
+            e2+=1
+            
+    return(json.dumps({"Return": "Record Retrived Successfully",
+                        "ReturnCode": "RRS",
+                        "housekeeping":{
+                                'status_report':dep_count_report,
+                                'Reminder':[{
+                                    'reminder1':'reminder1',
+                                    'count':r1 
+                                    },
+                                    {
+                                    'reminder1':'reminder1',
+                                    'count':r2    
+                                        }],        
+                                'escalation':[
+                                    {
+                                     "Escalation1": "Escalation1",
+                                     "count": e1
+                                     },{
+                                     "Escalation2": "Escalation2",
+                                     "count": e2
+                                    }
+                                    ]
+                                
+                                },
+                        "Status": "Success","StatusCode": "200"},indent=4))
     
 
