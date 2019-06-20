@@ -323,7 +323,7 @@ def departmentbasedreport(request):
                                     'count':r1 
                                     },
                                     {
-                                    'reminder1':'reminder1',
+                                    'reminder1':'reminder2',
                                     'count':r2    
                                         }],        
                                 'escalation':[
