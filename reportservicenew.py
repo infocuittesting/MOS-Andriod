@@ -316,7 +316,7 @@ def departmentbasedreport(request):
             
     return(json.dumps({"Return": "Record Retrived Successfully",
                         "ReturnCode": "RRS",
-                        "housekeeping":{
+                        "Department": d['department'],
                                 'status_report':dep_count_report,
                                 'Reminder':[{
                                     'reminder1':'reminder1',
@@ -334,9 +334,9 @@ def departmentbasedreport(request):
                                      "Escalation2": "Escalation2",
                                      "count": e2
                                     }
-                                    ]
+                                    ],
                                 
-                                },
+                                
                         "Status": "Success","StatusCode": "200"},indent=4))
     
 
