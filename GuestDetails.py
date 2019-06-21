@@ -73,12 +73,14 @@ def Query_Guest_Details(request):
     
     return json.dumps({"Return": "Record Retrived Successfully","ReturnCode": "RRS",
                        "Returnvalue":gus_details},indent=2)
-def query_collection(coll_id):
+def query_collection2(coll_id):
     print("query collection")
-    a = json.loads(dbget("select * from fb_collection where fbcollection_id='"+str(coll_id)+"' "))
+    a = json.loads(dbget("select  ldry_collection.*,ldryitem_name,price from ldry_collection join laundry_items on \
+                           laundry_items.ldryitem_id = ldry_collection.ldryitem_id where ldrycollection_id='"+str(coll_id)+"' "))
     return(a)
-def query_collection2(coll_id):    
-    b= json.loads(dbget("select * from ldry_collection where ldrycollection_id='"+str(coll_id)+"' "))
+def query_collection(coll_id):    
+    b= json.loads(dbget("select fb_collection.*,item_name,price from fb_collection join foodandbeverage_items on \
+                            foodandbeverage_items.fbitem_id = fb_collection.fbitem_id where fbcollection_id='"+str(coll_id)+"' "))
     return(b)
     
 def Query_Billing_Details(request):
@@ -99,11 +101,13 @@ def Query_Billing_Details(request):
     print(total_days)
     total_price= total_days * guest[0]['price']
     return json.dumps({"Return": "Record Retrived Successfully","ReturnCode": "RRS",
-                       "Food_beverage":{
+                       "Return_Value":{"Food_beverage":{
                            'fb_order':[dict(f,item=query_collection(f['fbcollection_id'])) for f in food]
                            },
                        "laundry":{
                            'ldry_order':[dict(f,item=query_collection2(f['ldrycollect_id'])) for f in ldry]
                            },
                        "room_price":guest,
-                       "total_amount":total_price+total_amount_laundry+total_amt_food},indent=2)
+                       "total_amount":total_price+total_amount_laundry+total_amt_food}},indent=2)
+
+
