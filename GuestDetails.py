@@ -73,12 +73,21 @@ def Query_Guest_Details(request):
     
     return json.dumps({"Return": "Record Retrived Successfully","ReturnCode": "RRS",
                        "Returnvalue":gus_details},indent=2)
+def query_collection(coll_id):
+    print("query collection")
+    a = json.loads(dbget("select * from fb_collection where fbcollection_id='"+str(coll_id)+"' "))
+    return(a)
+def query_collection2(coll_id):    
+    b= json.loads(dbget("select * from ldry_collection where ldrycollection_id='"+str(coll_id)+"' "))
+    return(b)
+    
 def Query_Billing_Details(request):
     d=request.json
     guest = json.loads(dbget("select hotel_rooms.price,* from guest_details\
 	join hotel_rooms on hotel_rooms.room_no = guest_details.room_no\
 	 where guest_details.room_no='"+str(d['room_no'])+"' and checkout IS Null;"))
     food= json.loads(dbget("select * from fb_requests where date(request_time) between '"+str(guest[0]['checkin_date'])+"' and '"+str(guest[0]['checkout_date'])+"' and room_no='"+str(d['room_no'])+"';"))
+    print("food",  food)
     ldry = json.loads(dbget("	select * from ldry_request where date(request_time) between '"+str(guest[0]['checkin_date'])+"' and '"+str(guest[0]['checkout_date'])+"' and room_no='"+str(d['room_no'])+"';"))
     total_amount_laundry = sum( dry['total_amount'] for dry in ldry)
     print(total_amount_laundry)
@@ -90,6 +99,11 @@ def Query_Billing_Details(request):
     print(total_days)
     total_price= total_days * guest[0]['price']
     return json.dumps({"Return": "Record Retrived Successfully","ReturnCode": "RRS",
-                       "Food_beverage":food,"laundry":ldry,"room_price":guest,
-                       "total_amount":total_price+total_amount_laundry  +total_amt_food},indent=2)
-
+                       "Food_beverage":{
+                           'fb_order':[dict(f,item=query_collection(f['fbcollection_id'])) for f in food]
+                           },
+                       "laundry":{
+                           'ldry_order':[dict(f,item=query_collection2(f['ldrycollect_id'])) for f in ldry]
+                           },
+                       "room_price":guest,
+                       "total_amount":total_price+total_amount_laundry+total_amt_food},indent=2)
