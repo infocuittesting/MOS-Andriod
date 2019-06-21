@@ -293,7 +293,7 @@ def departmentbasedreport(request):
     #pending_count = filter(lambda x: x.ticketstatus_id == 1,  hkrequest3)
     while st_date <= ed_date:
         print(st_date)
-        dep_count_report.append({'date':str(st_date),
+        dep_count_report.append({'date':str(st_date.strftime('%b %d')),
                                 'Completed': complete_count(hkrequest3,st_date,n=2),
                                 'Pending': complete_count(hkrequest3,st_date,n=1)
                                 })
@@ -331,7 +331,7 @@ def departmentbasedreport(request):
                                      "Escalation1": "Escalation1",
                                      "count": e1
                                      },{
-                                     "Escalation2": "Escalation2",
+                                     "Escalation1": "Escalation2",
                                      "count": e2
                                     }
                                     ],
