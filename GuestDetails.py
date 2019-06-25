@@ -85,8 +85,8 @@ def query_collection(coll_id):
     
 def Query_Billing_Details(request):
     d=request.json
-    guest = json.loads(dbget("select hotel_rooms.price,* from guest_details\
-	join hotel_rooms on hotel_rooms.room_no = guest_details.room_no\
+    guest = json.loads(dbget("select room_type.roomtype_name, hotel_rooms.price,* from guest_details\
+	join hotel_rooms on hotel_rooms.room_no = guest_details.room_no join room_type on hotel_rooms.roomtype_id=room_type.roomtype_id\
 	 where guest_details.room_no='"+str(d['room_no'])+"' and checkout IS Null;"))
     food= json.loads(dbget("select * from fb_requests where date(request_time) between '"+str(guest[0]['checkin_date'])+"' and '"+str(guest[0]['checkout_date'])+"' and room_no='"+str(d['room_no'])+"';"))
     print("food",  food)
